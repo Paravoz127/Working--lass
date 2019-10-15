@@ -71,9 +71,9 @@ public class UserDAO extends DAO<User>{
                     + "second_name='" + elem.getSecondName() + "', "
                     + "login='" + elem.getLogin() + "', "
                     + "password='" + elem.getPassword() + "', "
-                    + "birthday='" + elem.getDate() + "', "
-                    + "company_id='" + elem.getCompany().getId() + "', "
-                    + "boss_id='" + elem.getBoss().getId() + "' WHERE id=" + id + ";"
+                    + "birthday=" + elem.getDate() + ", "
+                    + "company_id=" + elem.getCompany().getId() + ", "
+                    + "boss_id=" + elem.getBoss().getId() + " WHERE id=" + id + ";"
             );
         } catch (SQLException e) {
             e.printStackTrace();

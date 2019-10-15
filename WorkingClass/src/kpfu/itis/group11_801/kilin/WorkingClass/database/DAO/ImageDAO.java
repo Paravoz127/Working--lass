@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ImageDAO extends DAO<Image>{
-
     private static Connection connection;
     private static ImageDAO imageDAO;
 
