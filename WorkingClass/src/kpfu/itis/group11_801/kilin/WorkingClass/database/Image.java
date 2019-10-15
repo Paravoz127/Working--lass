@@ -1,14 +1,22 @@
 package kpfu.itis.group11_801.kilin.WorkingClass.database;
 
 public class Image {
+    private int id;
     private int number;
     private String imagePath;
     private String info;
+    private int messageId;
 
-    public Image(int number, String imagePath, String info) {
+    public Image(int id, int number, String imagePath, String info, int messageId) {
         this.number = number;
         this.imagePath = imagePath;
         this.info = info;
+        this.messageId = messageId;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getInfo() {
@@ -21,5 +29,9 @@ public class Image {
 
     public String getImagePath() {
         return imagePath;
+    }
+
+    public int getMessageId() {
+        return messageId;
     }
 }
