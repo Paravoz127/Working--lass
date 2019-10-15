@@ -1,16 +1,22 @@
 package kpfu.itis.group11_801.kilin.WorkingClass.database;
 
 public class PromotionRequest {
+    private int id;
     private User sender;
     private User receiver;
     private String message;
     private boolean decided;
 
-    public PromotionRequest(User sender, User receiver, String message, boolean decided) {
+    public PromotionRequest(int id, User sender, User receiver, String message, boolean decided) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.decided = decided;
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public User getSender() {
