@@ -1,8 +1,7 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database.DAO;
+package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 
-import kpfu.itis.group11_801.kilin.WorkingClass.database.Image;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.PromotionRequest;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.User;
+import kpfu.itis.group11_801.kilin.workingClass.database.PromotionRequest;
+import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -46,6 +45,21 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
         return res;
     }
 
+    public List<PromotionRequest> getAllFromUser(User user) {
+        List<PromotionRequest> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.promotion_request WHERE user_id=" + user.getId() + ";");
+            while (rs.next()) {
+                res.add(getPromotionRequestByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     @Override
     public PromotionRequest getById(int id) {
         try {
@@ -67,7 +81,7 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
             statement.executeQuery("UPDATE public.promotion_request SET "
                     + "user_id=" + elem.getSender().getId() + ", "
                     + "message='" + elem.getMessage() + "', "
-                    + "decided=" + elem.isDecided() + " WHERE id=" + id + ";"
+                    + "decided='" + elem.isDecided() + "' WHERE id=" + id + ";"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -97,14 +111,13 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
         boolean decided = elem.isDecided();
         try {
             Statement statement = connection.createStatement();
-            statement.executeQuery("INSERT INTO public.promotion_request " +
+            ResultSet rs = statement.executeQuery("INSERT INTO public.promotion_request " +
                     "(user_id, message, decided) "
                     + "VALUES "
                     + "(" + user_id + ","
                     + "'" + message + "', "
-                    + "" + decided + ";"
+                    + "'" + decided + "') RETURNING id;"
             );
-            ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
@@ -116,9 +129,14 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     private PromotionRequest getPromotionRequestByResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         User user = UserDAO.getUserDAO().getById(rs.getInt("user_id"));
-        User target = user.getBoss();
         String message = rs.getString("message");
         boolean decided = rs.getBoolean("decided");
-        return new PromotionRequest(id, user, target, message, decided);
+        return new PromotionRequest(id, user, message, decided);
+    }
+
+    public static void main(String [] args) {
+        PromotionRequestDAO dao = PromotionRequestDAO.getPromotionRequestDAO();
+        PromotionRequest request = dao.create(new PromotionRequest(0, UserDAO.getUserDAO().getById(11), "text", true));
+        System.out.println(request.getId());
     }
 }
