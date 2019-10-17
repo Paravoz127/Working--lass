@@ -1,16 +1,12 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database.DAO;
+package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 
-import kpfu.itis.group11_801.kilin.WorkingClass.database.Company;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.MessageToCompany;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.MessageToUser;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.User;
+import kpfu.itis.group11_801.kilin.workingClass.database.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     private static Connection connection;
@@ -37,7 +33,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         List<MessageToCompany> res = new ArrayList<>();
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.messages_to_company;");
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message;");
             while (rs.next()) {
                 res.add(getMessageByResultSet(rs));
             }
@@ -52,7 +48,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     public MessageToCompany getById(int id) {
         try {
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.messages_to_company WHERE id=" + id + ";");
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE id=" + id + ";");
             rs.next();
             return getMessageByResultSet(rs);
         } catch (SQLException e) {
@@ -64,11 +60,24 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     @Override
     public MessageToCompany update(MessageToCompany elem) {
         int id = elem.getId();
+        String [] paths = {"null", "null", "null", "null", "null"};
+        int i = 0;
+        for (Image image : elem.getImages()) {
+            if (i != 5) {
+                paths[i] = image.getImagePath();
+            }
+            i++;
+        }
         try {
             Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.messages_to_company SET "
-                    + "sender_id=" + elem.getSender().getId() + ", "
-                    + "receiver_id=" + elem.getReceiver().getId() + ", "
+            statement.executeQuery("UPDATE public.company_message SET "
+                    + "sender=" + elem.getSender().getId() + ", "
+                    + "receiver=" + elem.getReceiver().getId() + ", "
+                    + "images_paths[0]='" + paths[0] + "', "
+                    + "images_paths[1]='" + paths[1] + "', "
+                    + "images_paths[2]='" + paths[2] + "', "
+                    + "images_paths[3]='" + paths[3] + "', "
+                    + "images_paths[4]='" + paths[4] + "', "
                     + "text='" + elem.getText() + "' WHERE id=" + id + ";"
             );
         } catch (SQLException e) {
@@ -81,7 +90,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     public void delete(int id) {
         try {
             Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.messages_to_company WHERE id=" + id + ";");
+            statement.executeQuery("DELETE FROM public.company_message WHERE id=" + id + ";");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,17 +106,28 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         int senderId = elem.getSender().getId();
         int receiverId = elem.getReceiver().getId();
         String text = elem.getText();
-        //TODO images
+        String [] paths = {"null", "null", "null", "null", "null"};
+        int i = 0;
+        for (Image image : elem.getImages()) {
+            if (i != 5) {
+                paths[i] = image.getImagePath();
+            }
+            i++;
+        }
         try {
             Statement statement = connection.createStatement();
-            statement.executeQuery("INSERT INTO public.messages_to_company " +
-                    "(sender_id, receiver_id, text) "
+            ResultSet rs = statement.executeQuery("INSERT INTO public.company_message " +
+                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], text) "
                     + "VALUES "
                     + "(" + senderId + ","
                     + "" + receiverId + ", "
-                    + "'" + text + "');"
+                    + "'" + paths[0] + "', "
+                    + "'" + paths[1] + "', "
+                    + "'" + paths[2] + "', "
+                    + "'" + paths[3] + "', "
+                    + "'" + paths[4] + "', "
+                    + "'" + text + "') RETURNING id;"
             );
-            ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
@@ -118,10 +138,28 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
 
     private MessageToCompany getMessageByResultSet(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
-        User sender = UserDAO.getUserDAO().getById(rs.getInt("sender_id"));
-        Company receiver = CompanyDAO.getCompanyDAO().getById(rs.getInt("receiver_id"));
+        User sender = UserDAO.getUserDAO().getById(rs.getInt("sender"));
+        Company receiver = CompanyDAO.getCompanyDAO().getById(rs.getInt("receiver"));
         String text = rs.getString("text");
-        //TODO images
-        return new MessageToCompany(id, sender, text, null, receiver);
+        List<Image> images;
+        Array paths = rs.getArray("images_paths");
+
+        List<String> list = Arrays.asList((String[])paths.getArray()).stream()
+                .map(x -> x == null ? "null" : x)
+                .collect(Collectors.toList());
+        images = list.stream()
+                .map(y -> new Image(y))
+                .collect(Collectors.toList());
+        return new MessageToCompany(id, sender, text, images, receiver);
+    }
+
+    public static void main(String [] args) {
+        MessageToCompanyDAO dao = MessageToCompanyDAO.getMessageToCompanyDAO();
+        ArrayList<Image> images = new ArrayList<>();
+        images.add(new Image("link1"));
+        images.add(new Image("link2"));
+        MessageToCompany messageToCompany = dao.create(new MessageToCompany(0, UserDAO.getUserDAO().getById(10), "fff", images, CompanyDAO.getCompanyDAO().getById(2)));
+        System.out.println(messageToCompany.getId());
+
     }
 }
