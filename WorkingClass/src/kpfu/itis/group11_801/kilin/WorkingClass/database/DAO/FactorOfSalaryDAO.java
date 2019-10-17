@@ -1,7 +1,7 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database.DAO;
+package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 
-import kpfu.itis.group11_801.kilin.WorkingClass.database.Company;
-import kpfu.itis.group11_801.kilin.WorkingClass.database.FactorOfSalary;
+import kpfu.itis.group11_801.kilin.workingClass.database.Company;
+import kpfu.itis.group11_801.kilin.workingClass.database.FactorOfSalary;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -66,7 +66,7 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
             statement.executeQuery("UPDATE public.factor_of_salary SET "
                     + "name='" + elem.getName() + "', "
                     + "info='" + elem.getInfo() + "', "
-                    + "group_id=" + elem.getCompany().getId() + " WHERE id=" + id + ";"
+                    + "company_id=" + elem.getCompany().getId() + " WHERE id=" + id + ";"
             );
         } catch (SQLException e) {
             e.printStackTrace();
@@ -93,17 +93,16 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
     public FactorOfSalary create(FactorOfSalary elem) {
         String name = elem.getName();
         String info = elem.getInfo();
-        int group_id = elem.getCompany().getId();
+        int companyId = elem.getCompany().getId();
         try {
             Statement statement = connection.createStatement();
-            statement.executeQuery("INSERT INTO public.factor_of_salary " +
-                    "(name, info, group_id) "
+            ResultSet rs = statement.executeQuery("INSERT INTO public.factor_of_salary " +
+                    "(name, info, company_id) "
                     + "VALUES "
                     + "('" + name + "',"
                     + "'" + info + "',"
-                    + group_id + ");"
+                    + companyId + ") RETURNING id;"
             );
-            ResultSet rs = statement.getGeneratedKeys();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
@@ -116,7 +115,14 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
         int id = rs.getInt("id");
         String name = rs.getString("name");
         String info = rs.getString("info");
-        Company company = CompanyDAO.getCompanyDAO().getById(rs.getInt("group_id"));
+        int companyId = rs.getInt("company_id");
+        Company company = CompanyDAO.getCompanyDAO().getById(companyId);
         return new FactorOfSalary(id, name, info, company);
+    }
+
+    public static void main(String [] args) {
+        FactorOfSalaryDAO dao = FactorOfSalaryDAO.getFactorOfSalaryDAO();
+        FactorOfSalary factor = dao.create(new FactorOfSalary(0, "name", "info", CompanyDAO.getCompanyDAO().getById(2)));
+        System.out.println(factor.getId());
     }
 }
