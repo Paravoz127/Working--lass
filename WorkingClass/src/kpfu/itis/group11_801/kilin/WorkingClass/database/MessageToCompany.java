@@ -1,4 +1,4 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database;
+package kpfu.itis.group11_801.kilin.workingClass.database;
 
 import java.util.List;
 

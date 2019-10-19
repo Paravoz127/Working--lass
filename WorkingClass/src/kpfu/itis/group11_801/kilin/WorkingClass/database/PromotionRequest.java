@@ -1,15 +1,13 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database;
+package kpfu.itis.group11_801.kilin.workingClass.database;
 
 public class PromotionRequest {
     private int id;
-    private User sender;
-    private User receiver;
+    private User user;
     private String message;
     private boolean decided;
 
-    public PromotionRequest(int id, User sender, User receiver, String message, boolean decided) {
-        this.sender = sender;
-        this.receiver = receiver;
+    public PromotionRequest(int id, User user, String message, boolean decided) {
+        this.user = user;
         this.message = message;
         this.decided = decided;
         this.id = id;
@@ -20,11 +18,7 @@ public class PromotionRequest {
     }
 
     public User getSender() {
-        return sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
+        return user;
     }
 
     public boolean isDecided() {
