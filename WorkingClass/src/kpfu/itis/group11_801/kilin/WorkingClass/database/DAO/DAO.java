@@ -1,4 +1,4 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database.DAO;
+package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 
 import java.sql.SQLException;
 import java.util.List;
