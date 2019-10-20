@@ -1,8 +1,4 @@
-package kpfu.itis.group11_801.kilin.WorkingClass.database;
-
-import java.util.Date;
-import java.util.Map;
-
+package kpfu.itis.group11_801.kilin.workingClass.database;
 public class User {
     private int id;
     private String firstName;
@@ -12,10 +8,10 @@ public class User {
     private Date date;
     private Company company;
     private User boss;
-    private Map<FactorOfSalary, Integer> factors;
+    private Image image;
 
     public User(int id, String firstName, String secondName, String login, String password,
-                Date date, Company company, User boss, Map<FactorOfSalary, Integer> factors) {
+                Date date, Company company, User boss, Image image) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -24,7 +20,7 @@ public class User {
         this.date = date;
         this.company = company;
         this.boss = boss;
-        this.factors = factors;
+        this.image = image;
     }
 
     public int getId() {
@@ -33,6 +29,10 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -59,7 +59,37 @@ public class User {
         return boss;
     }
 
-    public Map<FactorOfSalary, Integer> getFactors() {
-        return factors;
+    public Image getImage() {
+        return image;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public void setBoss(User boss) {
+        this.boss = boss;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setSecondName(String secondName) {
+        this.secondName = secondName;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof User) {
+            return ((User) obj).getId() == getId();
+        }
+        else {
+            return false;
+        }
     }
 }
