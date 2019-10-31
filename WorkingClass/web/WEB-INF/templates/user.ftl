@@ -36,6 +36,11 @@
                     <div>Money: ${invite.getFactorAndUser().getValue()}</div>
                 </#list>
                 <br/>
+                <#if employees ??>
+                    <form action="/WorkingClass_war_exploded/promotions">
+                        <button type="submit">promotions</button>
+                    </form>
+                </#if>
                 <br/>
                 <#if boss ??>
                     <form action="/WorkingClass_war_exploded/promotion">

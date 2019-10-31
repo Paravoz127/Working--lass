@@ -20,6 +20,7 @@ public class PromotionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         new PromotionRequestService().delete(id);
+        response.sendRedirect("/WorkingClass_war_exploded/promotions");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

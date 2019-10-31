@@ -51,7 +51,16 @@
         <servlet-name>PromotionsServlet</servlet-name>
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.promotionsServletPackage.PromotionsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateNewFactor</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.createFactorServletPackage.CreateNewFactorServlet</servlet-class>
+    </servlet>
 
+
+    <servlet-mapping>
+        <servlet-name>CreateNewFactor</servlet-name>
+        <url-pattern>/create_new_factor</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PromotionsServlet</servlet-name>
         <url-pattern>/promotions</url-pattern>
