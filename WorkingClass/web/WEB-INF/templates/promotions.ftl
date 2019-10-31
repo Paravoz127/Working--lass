@@ -8,7 +8,7 @@
                 <div>Sender: ${elem.getSender().getFirstName()} ${elem.getSender().getSecondName()}</div>
                 <div>Message: ${elem.getMessage()}</div>
                 <span>
-                    <form method="get" action="/WorkingClass_war_exploded/create_new_factor">
+                    <form method="get" action="/WorkingClass_war_exploded/factor_by_promotion">
                         <button type="submit" name="id" value="${elem.getId()}">Yes</button>
                     </form>
                 </span>

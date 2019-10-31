@@ -68,5 +68,11 @@ public class UserService {
         return UserDAO.getUserDAO().getEmployees(u);
     }
 
+    public boolean isEmployeeOf(User boss, User user) {
+        if (user.getBoss() != null) {
+            return user.getBoss().equals(boss);
+        }
+        return false;
+    }
 
 }

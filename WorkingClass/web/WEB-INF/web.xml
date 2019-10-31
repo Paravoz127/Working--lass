@@ -52,14 +52,22 @@
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.promotionsServletPackage.PromotionsServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateNewFactor</servlet-name>
-        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.createFactorServletPackage.CreateNewFactorServlet</servlet-class>
+        <servlet-name>CreateNewFactorByPromotion</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.createFactorByPromotionServletPackage.CreateNewFactorByPromotionServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewFactorServlet</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.createNewFactorServletPackage.CreateNewFactorServlet
+        </servlet-class>
     </servlet>
 
-
     <servlet-mapping>
-        <servlet-name>CreateNewFactor</servlet-name>
-        <url-pattern>/create_new_factor</url-pattern>
+        <servlet-name>CreateNewFactorServlet</servlet-name>
+        <url-pattern>/create_factor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewFactorByPromotion</servlet-name>
+        <url-pattern>/factor_by_promotion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PromotionsServlet</servlet-name>

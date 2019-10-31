@@ -63,6 +63,9 @@ public class UserServlet extends HttpServlet {
                 List<User> employees = new UserService().getEmployees(user);
                 root.put("employees", employees);
 
+                boolean isEmployee = new UserService().isEmployeeOf(new UserService().getUserById(myId), user);
+                root.put("is_employee", isEmployee);
+
                 List<FactorAndUser> positiveFactorAndUsers = new FactorAndUserService().getPositiveByUser(user);
                 root.put("positive", positiveFactorAndUsers);
                 List<FactorAndUser> negativeFactorAndUsers = new FactorAndUserService().getNegativeByUser(user);

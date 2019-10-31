@@ -65,6 +65,10 @@
                 <#list employees as emp>
                     <a href="/WorkingClass_war_exploded/user?id=${emp.getId()}">${emp.getFirstName()} ${emp.getSecondName()}</a>
                 </#list>
+            <#elseif is_employee && is_employee == true ??>
+                <form action="/WorkingClass_war_exploded/create_factor" method="GET">
+                    <button type="submit" name="userId" value="${user.getId()}">change salary</button>
+                </form>
             </#if>
 
         <#else>
