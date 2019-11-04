@@ -15,6 +15,13 @@
             <form action="/WorkingClass_war_exploded/set" method="GET">
                 <button type="submit">edit</button>
             </form>
+            <form action="/WorkingClass_war_exploded/dialogs" method="GET">
+                <button type="submit">my messages</button>
+            </form>
+        <#else>
+            <form action="/WorkingClass_war_exploded/messages" method="GET">
+                <button type="submit" name="id" value="#{user.getId()}">Message</button>
+            </form>
         </#if>
         <#if user.getCompany() ??>
             <div>${user.getCompany().getName()}</div>
@@ -25,6 +32,9 @@
                 <button type="submit" name="id" value="${user.getCompany().getId()}">show company</button>
             </form>
             <#if show_info && show_info == true ??>
+                <form action="/WorkingClass_war_exploded/com_messages">
+                    <button type="submit">message to company chat</button>
+                </form>
                 <form action="/WorkingClass_war_exploded/invite">
                     <button type="submit">invite user</button>
                 </form>

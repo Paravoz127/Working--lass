@@ -43,6 +43,21 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         return res;
     }
 
+    public List<MessageToUser> getMessagesFrom1To2(User u1, User u2) {
+        List<MessageToUser> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.user_message WHERE sender=" + u1.getId() + " AND receiver=" + u2.getId() + ";");
+            while (rs.next()) {
+                res.add(getMessageByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     @Override
     public MessageToUser getById(int id) {
         try {
@@ -109,14 +124,16 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         int i = 0;
         for (Image image : elem.getImages()) {
             if (i != 5) {
-                paths[i] = image.getImagePath();
+                if (image != null) {
+                    paths[i] = image.getImagePath();
+                }
             }
             i++;
         }
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("INSERT INTO public.user_message " +
-                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], text) "
+                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], time, text) "
                     + "VALUES "
                     + "(" + senderId + ","
                     + "" + receiverId + ", "
@@ -125,6 +142,7 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
                     + "'" + paths[2] + "', "
                     + "'" + paths[3] + "', "
                     + "'" + paths[4] + "', "
+                    + "'now', "
                     + "'" + text + "') RETURNING id;"
             );
             rs.next();
@@ -142,6 +160,7 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         String text = rs.getString("text");
         List<Image> images;
         Array paths = rs.getArray("images_paths");
+        DateTime dateTime = new DateTime(rs.getString("time").substring(0, 19));
 
         List<String> list = Arrays.asList((String[])paths.getArray()).stream()
                 .map(x -> x == null ? "null" : x)
@@ -149,7 +168,7 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         images = list.stream()
                 .map(y -> new Image(y))
                 .collect(Collectors.toList());
-        return new MessageToUser(id, sender, text, images, receiver);
+        return new MessageToUser(id, sender, text, images, receiver, dateTime);
     }
 
     public static void main(String [] args) {
@@ -157,7 +176,7 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         ArrayList<Image> images = new ArrayList<>();
         images.add(new Image("link1"));
         images.add(new Image("link2"));
-        MessageToUser messageToUser = dao.create(new MessageToUser(0, UserDAO.getUserDAO().getById(10), "fff", images, UserDAO.getUserDAO().getById(11)));
+        MessageToUser messageToUser = dao.create(new MessageToUser(0, UserDAO.getUserDAO().getById(10), "fff", images, UserDAO.getUserDAO().getById(11), null));
         System.out.println(messageToUser.getId());
 
     }

@@ -4,8 +4,8 @@ import java.util.List;
 
 public class MessageToUser extends Message {
     private User receiver;
-    public MessageToUser(int id, User sender, String text, List<Image> images, User receiver) {
-        super(id, sender, text, images);
+    public MessageToUser(int id, User sender, String text, List<Image> images, User receiver, DateTime dateTime) {
+        super(id, sender, text, images, dateTime);
         this.receiver = receiver;
     }
 
