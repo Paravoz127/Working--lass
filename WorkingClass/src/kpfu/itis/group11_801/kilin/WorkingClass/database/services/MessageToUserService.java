@@ -4,9 +4,8 @@ import kpfu.itis.group11_801.kilin.workingClass.database.DAO.MessageToUserDAO;
 import kpfu.itis.group11_801.kilin.workingClass.database.MessageToUser;
 import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MessageToUserService {
     public MessageToUser getById(int id) {
@@ -28,5 +27,27 @@ public class MessageToUserService {
 
     public void create(MessageToUser messageToUser) {
         MessageToUserDAO.getMessageToUserDAO().create(messageToUser);
+    }
+
+    public List<MessageToUser> getBySender(User u) {
+        return MessageToUserDAO.getMessageToUserDAO().getBySender(u);
+    }
+
+    public List<MessageToUser> getByTarget(User u) {
+        return MessageToUserDAO.getMessageToUserDAO().getByTarget(u);
+    }
+
+    public Set<User> getUsersWhoHaveDialogsWithUser(User u) {
+        List<User> users = getBySender(u).stream()
+                .map(x -> x.getReceiver())
+                .collect(Collectors.toList());
+        users.addAll(getByTarget(u).stream()
+                .map(x -> x.getSender())
+                .collect(Collectors.toList())
+        );
+
+        Set<User> res = new TreeSet<>();
+        res.addAll(users);
+        return res;
     }
 }

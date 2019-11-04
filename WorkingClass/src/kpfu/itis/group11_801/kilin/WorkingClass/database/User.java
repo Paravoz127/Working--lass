@@ -1,5 +1,5 @@
 package kpfu.itis.group11_801.kilin.workingClass.database;
-public class User {
+public class User implements Comparable<User> {
     private int id;
     private String firstName;
     private String secondName;
@@ -91,5 +91,15 @@ public class User {
         else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return id + " " + firstName + " " + secondName;
+    }
+
+    @Override
+    public int compareTo(User o) {
+        return id - o.getId();
     }
 }

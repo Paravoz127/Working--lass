@@ -71,7 +71,16 @@
             kpfu.itis.group11_801.kilin.workingClass.servlets.messagesServletsPackage.MessageToCompanyServlet
         </servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>DialogsServlet</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.dialogsServletPackage.DialogsServlet
+        </servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>DialogsServlet</servlet-name>
+        <url-pattern>/dialogs</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>MessageToCompanyServlet</servlet-name>
         <url-pattern>/com_messages</url-pattern>

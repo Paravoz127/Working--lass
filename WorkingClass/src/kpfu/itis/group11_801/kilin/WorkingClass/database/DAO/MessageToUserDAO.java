@@ -43,6 +43,36 @@ public class MessageToUserDAO extends DAO<MessageToUser> {
         return res;
     }
 
+    public List<MessageToUser> getByTarget(User u) {
+        List<MessageToUser> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.user_message WHERE receiver=" + u.getId() + ";");
+            while (rs.next()) {
+                res.add(getMessageByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    public List<MessageToUser> getBySender(User u) {
+        List<MessageToUser> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.user_message WHERE sender=" + u.getId() + ";");
+            while (rs.next()) {
+                res.add(getMessageByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     public List<MessageToUser> getMessagesFrom1To2(User u1, User u2) {
         List<MessageToUser> res = new ArrayList<>();
         try {
