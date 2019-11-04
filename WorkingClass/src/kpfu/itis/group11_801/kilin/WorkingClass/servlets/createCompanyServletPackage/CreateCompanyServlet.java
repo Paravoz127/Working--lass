@@ -21,24 +21,11 @@ import java.nio.file.Paths;
 public class CreateCompanyServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
-        String pathName = getServletContext().getRealPath("") + File.separator + "files" + File.separator + "companies" + File.separator;
-        String smallPath = "files" + File.separator + "companies"+ File.separator;
-        File dir = new File(pathName);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
         String name = request.getParameter("name");
         String info = request.getParameter("info");
         Part photoPart = request.getPart("photo");
-        BufferedInputStream fileContent = new BufferedInputStream(photoPart.getInputStream());
-        String fileName = System.currentTimeMillis() + ".png";
-        OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(pathName + fileName));
-        while (fileContent.available() != 0) {
-            outputStream.write(fileContent.read());
-        }
-        outputStream.close();
-        fileContent.close();
-        Company company = new CompanyService().registrate(new Company(0, name, info, new Image(smallPath + fileName)), user);
+        Image image = Image.CreateImage(photoPart, getServletContext());
+        Company company = new CompanyService().registrate(new Company(0, name, info, image), user);
         if (company == null) {
             response.sendRedirect("/WorkingClass_war_exploded/create_company");
         } else {

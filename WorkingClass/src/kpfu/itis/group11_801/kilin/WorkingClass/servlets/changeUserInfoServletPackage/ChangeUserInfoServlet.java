@@ -22,25 +22,12 @@ import java.util.Map;
 public class ChangeUserInfoServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
-        String pathName = getServletContext().getRealPath("") + File.separator + "files" + File.separator + "users" + File.separator;
-        String smallPath = "files" + File.separator + "users"+ File.separator;
-        File dir = new File(pathName);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
         String firstName = request.getParameter("first_name");
         String secondName = request.getParameter("second_name");
         Part photoPart = request.getPart("photo");
-        BufferedInputStream fileContent = new BufferedInputStream(photoPart.getInputStream());
-        if (fileContent.available() != 0) {
-            String fileName = System.currentTimeMillis() + ".png";
-            OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(pathName + fileName));
-            while (fileContent.available() != 0) {
-                outputStream.write(fileContent.read());
-            }
-            outputStream.close();
-            fileContent.close();
-            user.setImage(new Image(smallPath + fileName));
+        Image image = Image.CreateImage(photoPart, getServletContext());
+        if (image != null) {
+            user.setImage(image);
         }
 
         user.setFirstName(firstName);

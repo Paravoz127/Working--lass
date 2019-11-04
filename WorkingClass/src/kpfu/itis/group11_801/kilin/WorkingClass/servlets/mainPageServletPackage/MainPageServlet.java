@@ -13,14 +13,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainPageServlet extends HttpServlet {
-
-    @Override
-    public void init() {
-        Configuration cfg = new Configuration(Configuration.VERSION_2_3_29);
-        cfg.setServletContextForTemplateLoading(this.getServletContext(), "/WEB-INF/templates");
-        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
-        getServletContext().setAttribute("cfg", cfg);
-    }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = new UserService().authentication(request.getParameter("email"), request.getParameter("password"));
         if (user != null) {
