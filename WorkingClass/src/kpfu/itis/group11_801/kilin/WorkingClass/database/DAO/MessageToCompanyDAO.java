@@ -44,6 +44,36 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         return res;
     }
 
+    public List<MessageToCompany> getMessagesFrom1To2(User u1, Company company) {
+        List<MessageToCompany> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE sender=" + u1.getId() + " AND receiver=" + company.getId() + ";");
+            while (rs.next()) {
+                res.add(getMessageByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    public List<MessageToCompany> getMessagesByCompany(Company company) {
+        List<MessageToCompany> res = new ArrayList<>();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE receiver=" + company.getId() + ";");
+                while (rs.next()) {
+                res.add(getMessageByResultSet(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
     @Override
     public MessageToCompany getById(int id) {
         try {
@@ -110,14 +140,16 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         int i = 0;
         for (Image image : elem.getImages()) {
             if (i != 5) {
-                paths[i] = image.getImagePath();
+                if(image != null) {
+                    paths[i] = image.getImagePath();
+                }
             }
             i++;
         }
         try {
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("INSERT INTO public.company_message " +
-                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], text) "
+                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], time, text) "
                     + "VALUES "
                     + "(" + senderId + ","
                     + "" + receiverId + ", "
@@ -126,6 +158,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
                     + "'" + paths[2] + "', "
                     + "'" + paths[3] + "', "
                     + "'" + paths[4] + "', "
+                    + "'now', "
                     + "'" + text + "') RETURNING id;"
             );
             rs.next();
@@ -143,6 +176,8 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         String text = rs.getString("text");
         List<Image> images;
         Array paths = rs.getArray("images_paths");
+        System.out.println(rs.getString("time"));
+        DateTime dateTime = new DateTime(rs.getString("time").substring(0, 19));
 
         List<String> list = Arrays.asList((String[])paths.getArray()).stream()
                 .map(x -> x == null ? "null" : x)
@@ -150,7 +185,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         images = list.stream()
                 .map(y -> new Image(y))
                 .collect(Collectors.toList());
-        return new MessageToCompany(id, sender, text, images, receiver);
+        return new MessageToCompany(id, sender, text, images, receiver, dateTime);
     }
 
     public static void main(String [] args) {
@@ -158,7 +193,7 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
         ArrayList<Image> images = new ArrayList<>();
         images.add(new Image("link1"));
         images.add(new Image("link2"));
-        MessageToCompany messageToCompany = dao.create(new MessageToCompany(0, UserDAO.getUserDAO().getById(10), "fff", images, CompanyDAO.getCompanyDAO().getById(2)));
+        MessageToCompany messageToCompany = dao.create(new MessageToCompany(0, UserDAO.getUserDAO().getById(38), "fff", images, CompanyDAO.getCompanyDAO().getById(20), null));
         System.out.println(messageToCompany.getId());
 
     }

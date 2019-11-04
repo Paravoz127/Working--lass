@@ -60,7 +60,26 @@
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.createNewFactorServletPackage.CreateNewFactorServlet
         </servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MessageToUserServlet</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.messagesServletsPackage.MessageToUserServlet
+        </servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>MessageToCompanyServlet</servlet-name>
+        <servlet-class>
+            kpfu.itis.group11_801.kilin.workingClass.servlets.messagesServletsPackage.MessageToCompanyServlet
+        </servlet-class>
+    </servlet>
 
+    <servlet-mapping>
+        <servlet-name>MessageToCompanyServlet</servlet-name>
+        <url-pattern>/com_messages</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MessageToUserServlet</servlet-name>
+        <url-pattern>/messages</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>CreateNewFactorServlet</servlet-name>
         <url-pattern>/create_factor</url-pattern>
