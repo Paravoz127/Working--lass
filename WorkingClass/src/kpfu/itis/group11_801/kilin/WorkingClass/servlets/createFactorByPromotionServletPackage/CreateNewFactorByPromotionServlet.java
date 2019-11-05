@@ -37,18 +37,14 @@ public class CreateNewFactorByPromotionServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
-            try {
-                PromotionRequest promotionRequest = new PromotionRequestService().getById(Integer.parseInt(request.getParameter("id")));
-                Map<String, Object> root = new HashMap<>();
-                root.put("promotion", promotionRequest);
-                Helpers.render(request, response, "create_new_factor_by_promotion.ftl", root);
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.sendRedirect("/WorkingClass_war_exploded/promotions");
-            }
+        try {
+            PromotionRequest promotionRequest = new PromotionRequestService().getById(Integer.parseInt(request.getParameter("id")));
+            Map<String, Object> root = new HashMap<>();
+            root.put("promotion", promotionRequest);
+            Helpers.render(request, response, "create_new_factor_by_promotion.ftl", root);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("/WorkingClass_war_exploded/promotions");
         }
     }
 }

@@ -21,7 +21,7 @@ public class RegistrationServlet extends HttpServlet {
         User u = new User(0, firstName, secondName, email, password, new Date(birthday), null, null, null);
         User user = new UserService().registrate(u);
         if (user != null) {
-            authenticate(user, request);
+            Helpers.authenticate(user, request);
             if(request.getParameter("safeMe") != null && request.getParameter("safeMe").equals("true")) {
                 Cookie cookie = new Cookie("user_id", user.getId() + "");
                 cookie.setMaxAge(24 * 60 * 60);
@@ -34,25 +34,6 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession hs = request.getSession();
-        if (hs.getAttribute("user") != null) {
-            response.sendRedirect("/WorkingClass_war_exploded/user");
-        } else {
-            Cookie[] cookies = request.getCookies();
-            if (cookies != null) {
-                for (Cookie cookie : cookies) {
-                    if (cookie.getName().equals("user_id") && cookie.getValue() != "") {
-                        authenticate(new UserService().getUserById(Integer.parseInt(cookie.getValue())), request);
-                        response.sendRedirect("/WorkingClass_war_exploded/user");
-                    }
-                }
-            }
-            Helpers.render(request, response, "registration.ftl", null);
-        }
-    }
-
-    private void authenticate(User user, HttpServletRequest request) {
-        HttpSession hs = request.getSession();
-        hs.setAttribute("user", user);
+        Helpers.render(request, response, "registration.ftl", null);
     }
 }

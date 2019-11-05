@@ -42,9 +42,7 @@ public class CreateNewFactorServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else if (request.getParameter("userId") == null) {
+        if (request.getParameter("userId") == null) {
             response.sendRedirect("/WorkingClass_war_exploded/user");
         } else {
             try {

@@ -3,6 +3,15 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>kpfu.itis.group11_801.kilin.workingClass.filters.AuthenticationFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>NotAuthenticatedFilter</filter-name>
+        <filter-class>kpfu.itis.group11_801.kilin.workingClass.filters.NotAuthenticatedFilter</filter-class>
+    </filter>
+
     <servlet>
         <servlet-name>MainPageServlet</servlet-name>
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.mainPageServletPackage.MainPageServlet</servlet-class>
@@ -76,7 +85,29 @@
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.dialogsServletPackage.DialogsServlet
         </servlet-class>
     </servlet>
-    
+
+
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/dialogs</url-pattern>
+        <url-pattern>/com_messages</url-pattern>
+        <url-pattern>/messages</url-pattern>
+        <url-pattern>/create_factor</url-pattern>
+        <url-pattern>/factor_by_promotion</url-pattern>
+        <url-pattern>/promotions</url-pattern>
+        <url-pattern>/promotion</url-pattern>
+        <url-pattern>/agree_to_invite</url-pattern>
+        <url-pattern>/create_company</url-pattern>
+        <url-pattern>/company</url-pattern>
+        <url-pattern>/invite</url-pattern>
+        <url-pattern>/user</url-pattern>
+        <url-pattern>/set</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>NotAuthenticatedFilter</filter-name>
+        <url-pattern>/main</url-pattern>
+        <url-pattern>/registration</url-pattern>
+    </filter-mapping>
     <servlet-mapping>
         <servlet-name>DialogsServlet</servlet-name>
         <url-pattern>/dialogs</url-pattern>

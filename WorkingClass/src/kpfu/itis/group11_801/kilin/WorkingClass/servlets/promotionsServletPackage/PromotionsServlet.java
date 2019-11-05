@@ -24,16 +24,10 @@ public class PromotionsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
-            User user = (User)request.getSession().getAttribute("user");
-            Map<String, Object> root = new HashMap<>();
-
-            List<PromotionRequest> promotionRequests = new PromotionRequestService().getAllToUser(user);
-            root.put("requests", promotionRequests);
-
-            Helpers.render(request, response, "promotions.ftl", root);
-        }
+        User user = (User)request.getSession().getAttribute("user");
+        Map<String, Object> root = new HashMap<>();
+        List<PromotionRequest> promotionRequests = new PromotionRequestService().getAllToUser(user);
+        root.put("requests", promotionRequests);
+        Helpers.render(request, response, "promotions.ftl", root);
     }
 }

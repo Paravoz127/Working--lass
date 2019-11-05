@@ -36,19 +36,15 @@ public class InviteServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
+        if (((User) request.getSession().getAttribute("user")).getCompany() == null) {
+            response.sendRedirect("/WorkingClass_war_exploded/create_company");
         } else {
-            if (((User) request.getSession().getAttribute("user")).getCompany() == null) {
-                response.sendRedirect("/WorkingClass_war_exploded/create_company");
-            } else {
-                Map<String, Object> root = new HashMap<>();
-                List<User> users = new UserService().getAllUsers().stream()
-                        .filter(x -> x.getCompany() == null)
-                        .collect(Collectors.toList());
-                root.put("users", users);
-                Helpers.render(request, response, "invite.ftl", root);
-            }
+            Map<String, Object> root = new HashMap<>();
+            List<User> users = new UserService().getAllUsers().stream()
+                    .filter(x -> x.getCompany() == null)
+                    .collect(Collectors.toList());
+            root.put("users", users);
+            Helpers.render(request, response, "invite.ftl", root);
         }
     }
 }

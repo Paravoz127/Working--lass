@@ -4,9 +4,11 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Map;
 
@@ -41,6 +43,11 @@ public class Helpers {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void authenticate(User user, HttpServletRequest request) {
+        HttpSession hs = request.getSession();
+        hs.setAttribute("user", user);
     }
 
 }

@@ -43,17 +43,13 @@ public class MessageToCompanyServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
-            User user = (User)request.getSession().getAttribute("user");
-            Company receiver = user.getCompany();
-            List<MessageToCompany> messages = new MessageToCompanyService().getMessages(receiver);
-            Map<String, Object> root = new HashMap<>();
-            root.put("messages", messages);
-            root.put("user", user);
-            root.put("receiver", receiver);
-            Helpers.render(request, response, "messages_to_company.ftl", root);
-        }
+        User user = (User)request.getSession().getAttribute("user");
+        Company receiver = user.getCompany();
+        List<MessageToCompany> messages = new MessageToCompanyService().getMessages(receiver);
+        Map<String, Object> root = new HashMap<>();
+        root.put("messages", messages);
+        root.put("user", user);
+        root.put("receiver", receiver);
+        Helpers.render(request, response, "messages_to_company.ftl", root);
     }
 }

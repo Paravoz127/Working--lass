@@ -20,16 +20,12 @@ public class DialogsServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
-            User user = (User)request.getSession().getAttribute("user");
-            Set<User> users = new MessageToUserService().getUsersWhoHaveDialogsWithUser(user);
-            System.out.println(users);
-            Map<String, Object> root = new HashMap<>();
-            root.put("user", user);
-            root.put("users", users);
-            Helpers.render(request, response, "dialogs.ftl", root);
-        }
+        User user = (User)request.getSession().getAttribute("user");
+        Set<User> users = new MessageToUserService().getUsersWhoHaveDialogsWithUser(user);
+        System.out.println(users);
+        Map<String, Object> root = new HashMap<>();
+        root.put("user", user);
+        root.put("users", users);
+        Helpers.render(request, response, "dialogs.ftl", root);
     }
 }

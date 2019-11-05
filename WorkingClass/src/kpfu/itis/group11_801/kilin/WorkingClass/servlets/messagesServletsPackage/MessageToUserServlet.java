@@ -44,27 +44,23 @@ public class MessageToUserServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
-            if (request.getParameter("id") == null) {
-                response.sendRedirect("/WorkingClass_war_exploded/dialogs");
-            }
-            int id = 0;
-            try {
-                id = Integer.parseInt(request.getParameter("id"));
-            } catch (Exception e) {
-                e.printStackTrace();
-                response.sendRedirect("/WorkingClass_war_exploded/dialogs");
-            }
-            User user = (User)request.getSession().getAttribute("user");
-            User receiver = new UserService().getUserById(id);
-            List<MessageToUser> messages = new MessageToUserService().getMessages(user, receiver);
-            Map<String, Object> root = new HashMap<>();
-            root.put("messages", messages);
-            root.put("user", user);
-            root.put("receiver", receiver);
-            Helpers.render(request, response, "messages_to_user.ftl", root);
+        if (request.getParameter("id") == null) {
+            response.sendRedirect("/WorkingClass_war_exploded/dialogs");
         }
+        int id = 0;
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("/WorkingClass_war_exploded/dialogs");
+        }
+        User user = (User)request.getSession().getAttribute("user");
+        User receiver = new UserService().getUserById(id);
+        List<MessageToUser> messages = new MessageToUserService().getMessages(user, receiver);
+        Map<String, Object> root = new HashMap<>();
+        root.put("messages", messages);
+        root.put("user", user);
+        root.put("receiver", receiver);
+        Helpers.render(request, response, "messages_to_user.ftl", root);
     }
 }
