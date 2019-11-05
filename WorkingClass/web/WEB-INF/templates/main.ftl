@@ -18,13 +18,7 @@
             About us
         </h1>
         <p class="text-about">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-            minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
+            Website for accounting salaries of employees. An employee can apply for a salary increase, see what allowances for what he receives. The employer can tie workers to himself, appoint and edit his salary.
         </p>
     </div>
     <form id="login-id" onsubmit="javascript:return validate('login-id', 'email')" action="/WorkingClass_war_exploded/main" method="POST">
