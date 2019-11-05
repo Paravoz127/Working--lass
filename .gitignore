@@ -28,3 +28,6 @@ out
 *.kotlin_module
 
 *.iml
+
+*.jpg
+*.png
