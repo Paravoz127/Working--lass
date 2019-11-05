@@ -1,0 +1,181 @@
+/* Navigation Panel */
+
+.nav-panel {
+    background-color: rgb(255, 78, 78);
+    width: 100%;
+    height: 50px;
+    overflow: hidden;
+    display: block;
+    line-height: 50px;
+}
+
+.signoff {
+    display: inline-block;
+    margin: 0 15px;
+    vertical-align: top;
+    background-color: inherit;
+    font-weight: 600;
+    border: none;
+    margin-left: 74%;
+}
+
+.signoff:hover {
+    color: black;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+.nav-panel a {
+    display: inline-block;
+    margin: 0 15px;
+    vertical-align: top;
+    background-color: inherit;
+    font-weight: 600;
+    color: black;
+}
+
+a:hover {
+    color: black;
+    text-decoration: none;
+    opacity: 0.7;
+}
+
+/* info */
+
+.info {
+    display: flex;
+    justify-content: center;
+
+    background-color: rgb(255, 255, 255);
+    padding: 30px;
+}
+
+.img {
+    min-width: 250px;
+    min-height: 300px;
+    margin-inline-end: 50px;
+}
+
+.foto {
+    height: 300px;
+    width: 250px;
+    background-image: url(https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.pers-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+}
+
+.salfacts-invites {
+    min-width: 310px;
+    width: 310px;
+}
+
+.edit {
+    color: white;
+    padding: 5px 20px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    background-color: rgb(158, 163, 160);
+    width: 100%;
+  }
+
+  .edit:hover {
+    opacity: 0.8;
+  }
+
+
+.txt {
+    font-weight: 500;
+}
+
+.info a {
+    display: inline-block;
+    margin-left: 5px;
+    color: black;
+    font-weight: 400;
+}
+
+.list-container {
+    max-height: 800px;
+    width: 310px;
+    background-color: white;
+    border: 0.5px solid rgb(194, 194, 194);
+}
+
+#req {
+    width: 300px;
+}
+
+.position, .salary, .nf, .f-name, .s-name {
+    font-weight: 400;
+    margin-left: 5px;
+}
+
+.sal-factor-item{
+    display: flex;
+    flex-direction: column;
+}
+
+#sal-factors, #invites {
+    height: 500px;
+    width: 327px;
+    overflow: auto; 
+}
+
+.pos-buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.pos-buttons button {
+    padding: 5px 20px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    width: 40%;
+}
+
+.pos-buttons button:hover {
+    opacity: 0.8;
+}
+
+.accept {
+    background-color: green;
+}
+
+.reject {
+    background-color: red;
+}
+
+.message {
+    width: 400px;
+    max-width: 400px;
+    height: 400px;
+    min-height: 200px;
+    max-height: 200px;
+    padding: 4px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid rgb(0, 0, 0);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.body-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+body {
+    background-color: rgb(255, 255, 240);
+}
