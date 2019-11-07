@@ -56,10 +56,12 @@ a:hover {
     margin-inline-end: 50px;
 }
 
+.image {
+    max-width: 100%;
+}
+
 .foto {
-    height: 300px;
-    width: 250px;
-    background-image: url(https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png);
+    width: 450px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -1,19 +1,21 @@
-<html>
-<body>
-<form action="/WorkingClass_war_exploded/user">
-    <button type="submit">Back</button>
-</form>
+<#include "authenticated.ftl" />
 
-    <div>Name:</div>
-    <div>${company.getName()}</div>
-    <div>Info:</div>
-    <div>${company.getInfo()}</div>
-    <div>Photo:</div>
-    <#if company.getImage() ??>
-        <div> <img src="${path!}"> </div>
-    <#else>
-        <div> <img src="def"> </div>
-    </#if>
+<#macro css_js>
+    <link rel="stylesheet" href="css/company.css" />
+    <script src="js/company.js"></script>
+</#macro>
+<#macro info>
+    <div class="img">
+        <div class="foto">
+            <img class="image" src="${path!}"/>
+        </div>
+    </div>
+    <div class="pers-info">
+        <label class="txt" for="first-name">Name:</label>
+        <label class="name" for="f-name">${company.getName()}</label>
+        <label class="txt" for="work-info">Info:</label>
+        <label class="info-comp">${company.getInfo()}</label>
+    </div>
+</#macro>
 
-</body>
-</html>
+<@display_page />
