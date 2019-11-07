@@ -95,7 +95,7 @@ public class User implements Comparable<User> {
 
     @Override
     public String toString() {
-        return id + " " + firstName + " " + secondName;
+        return firstName + " " + secondName;
     }
 
     @Override
