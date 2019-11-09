@@ -40,10 +40,7 @@ public class MainPageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Map<String, Object> root = new HashMap<>();
         root.put("error", request.getParameter("error"));
-        String email = request.getParameter("email");
-        if (email != null) {
-            root.put("email", email);
-        }
+        root.put("email", request.getParameter("email"));
         Helpers.render(request, response, "main.ftl", root);
     }
 }
