@@ -13,6 +13,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegistrationServlet extends HttpServlet {
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        userService = new UserService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("first_name");
         String secondName = request.getParameter("second_name");
@@ -20,7 +27,7 @@ public class RegistrationServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String password2 = request.getParameter("password2");
-        RegistrationObject registrationObject = new UserService().registrate(firstName, secondName, birthday, email, password, password2);
+        RegistrationObject registrationObject = userService.registrate(firstName, secondName, birthday, email, password, password2);
 
         if (registrationObject.getCode() == 0) {
             User user = registrationObject.getUser();

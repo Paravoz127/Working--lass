@@ -17,18 +17,25 @@ import java.util.Map;
 
 @WebServlet(name = "PromotionsServlet")
 public class PromotionsServlet extends HttpServlet {
+
+    private PromotionRequestService promotionRequestService = new PromotionRequestService();
+
+    @Override
+    public void init() throws ServletException {
+        promotionRequestService = new PromotionRequestService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        new PromotionRequestService().delete(id);
+        promotionRequestService.delete(id);
         response.sendRedirect("/WorkingClass_war_exploded/promotions");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
         Map<String, Object> root = new HashMap<>();
-        List<PromotionRequest> promotionRequests = new PromotionRequestService().getAllToUser(user);
+        List<PromotionRequest> promotionRequests = promotionRequestService.getAllToUser(user);
         root.put("requests", promotionRequests);
-        root.put("user", request.getSession().getAttribute("user"));
         Helpers.render(request, response, "promotions.ftl", root);
     }
 }

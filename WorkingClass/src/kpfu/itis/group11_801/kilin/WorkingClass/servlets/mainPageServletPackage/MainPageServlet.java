@@ -14,12 +14,20 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainPageServlet extends HttpServlet {
+
+    private UserService userService;
+
+    @Override
+    public void init() throws ServletException {
+        userService = new UserService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String email = request.getParameter("email");
         if (email == null) {
             response.sendRedirect("/WorkingClass_war_exploded/main?error=Email is empty");
         } else {
-            AuthenticationObject authenticationObject = new UserService().authentication(email, request.getParameter("password"));
+            AuthenticationObject authenticationObject = userService.authentication(email, request.getParameter("password"));
             if (authenticationObject.getCode() == 0) {
                 User user = authenticationObject.getUser();
                 Helpers.authenticate(user, request);

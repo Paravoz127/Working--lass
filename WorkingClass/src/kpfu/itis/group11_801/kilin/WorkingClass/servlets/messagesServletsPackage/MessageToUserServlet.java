@@ -24,9 +24,19 @@ import java.util.stream.Collectors;
 
 @MultipartConfig
 public class MessageToUserServlet extends HttpServlet {
+
+    private UserService userService;
+    private MessageToUserService messageToUserService;
+
+    @Override
+    public void init() throws ServletException {
+        userService = new UserService();
+        messageToUserService = new MessageToUserService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User user = (User)request.getSession().getAttribute("user");
-        User receiver = new UserService().getUserById(Integer.parseInt(request.getParameter("id")));
+        User receiver = userService.getUserById(Integer.parseInt(request.getParameter("id")));
         String text = request.getParameter("message");
         List<Image> images = request.getParts().stream()
                 .filter(x -> x.getName().equals("images"))
@@ -36,7 +46,7 @@ public class MessageToUserServlet extends HttpServlet {
             response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId() + "&error=Message should not be empty");
         } else if (images.size() <= 5) {
             MessageToUser message = new MessageToUser(0, user, text, images, receiver, null);
-            new MessageToUserService().create(message);
+            messageToUserService.create(message);
             response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId());
         } else {
             response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId() + "&error=You can not use more than 5 photos");
@@ -55,11 +65,10 @@ public class MessageToUserServlet extends HttpServlet {
             response.sendRedirect("/WorkingClass_war_exploded/dialogs");
         }
         User user = (User)request.getSession().getAttribute("user");
-        User receiver = new UserService().getUserById(id);
-        List<MessageToUser> messages = new MessageToUserService().getMessages(user, receiver);
+        User receiver = userService.getUserById(id);
+        List<MessageToUser> messages = messageToUserService.getMessages(user, receiver);
         Map<String, Object> root = new HashMap<>();
         root.put("messages", messages);
-        root.put("user", user);
         root.put("receiver", receiver);
         root.put("error", request.getParameter("error"));
         Helpers.render(request, response, "messages_to_user.ftl", root);

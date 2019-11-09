@@ -15,26 +15,29 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-/*
-<div>Name of factor:</div>
-<input type="text" name="factor_name"/>
-<div>Message:</div>
-<input type="text" name="message">
-<div>Value:</div>
-<input type="number" name="value"/>
-<input type="submit" name="user_id" value="${user.getId()}"/>
-*/
 public class CreateNewFactorServlet extends HttpServlet {
+
+    private UserService userService;
+    private FactorOfSalaryService factorOfSalaryService;
+    private FactorAndUserService factorAndUserService;
+
+    @Override
+    public void init() throws ServletException {
+        userService = new UserService();
+        factorAndUserService = new FactorAndUserService();
+        factorOfSalaryService = new FactorOfSalaryService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            User user = new UserService().getUserById(Integer.parseInt(request.getParameter("user_id")));
+            User user = userService.getUserById(Integer.parseInt(request.getParameter("user_id")));
             int value = Integer.parseInt(request.getParameter("value"));
             String factorName = request.getParameter("factor_name");
             String message = request.getParameter("message");
             FactorOfSalary factorOfSalary = new FactorOfSalary(0, factorName, message, user.getCompany());
-            factorOfSalary = new FactorOfSalaryService().getOrCreate(factorOfSalary);
+            factorOfSalary = factorOfSalaryService.getOrCreate(factorOfSalary);
             FactorAndUser factorAndUser = new FactorAndUser(0, user, factorOfSalary, value);
-            new FactorAndUserService().getOrCreate(factorAndUser);
+            factorAndUserService.getOrCreate(factorAndUser);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,9 +49,8 @@ public class CreateNewFactorServlet extends HttpServlet {
             response.sendRedirect("/WorkingClass_war_exploded/user");
         } else {
             try {
-                User user = new UserService().getUserById(Integer.parseInt(request.getParameter("userId")));
+                User user = userService.getUserById(Integer.parseInt(request.getParameter("userId")));
                 Map<String, Object> root = new HashMap<>();
-                root.put("user", user);
                 Helpers.render(request, response, "create_factor.ftl", root);
             } catch (Exception e) {
                 e.printStackTrace();

@@ -16,6 +16,18 @@ import java.util.List;
 import java.util.Map;
 
 public class UserServlet extends HttpServlet {
+
+    private InviteService inviteService;
+    private UserService userService;
+    private FactorAndUserService factorAndUserService;
+
+    @Override
+    public void init() throws ServletException {
+        inviteService = new InviteService();
+        userService = new UserService();
+        factorAndUserService = new FactorAndUserService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String logout = request.getParameter("logout");
         if(logout != null && logout.equals("true")) {
@@ -39,30 +51,29 @@ public class UserServlet extends HttpServlet {
                 response.sendRedirect("/WorkingClass_war_exploded/user");
             }
         }
-        User user = new UserService().getUserById(id);
+        User user = userService.getUserById(id);
         if (user != null) {
             Map<String, Object> root = new HashMap<>();
-            root.put("user", user);
             root.put("show_info", showInfo);
 
-            List<Invite> invites = new InviteService().getByTarget(user);
+            List<Invite> invites = inviteService.getByTarget(user);
             root.put("invites", invites);
 
-            List<Invite> invitesFrom = new InviteService().getBySender(user);
+            List<Invite> invitesFrom = inviteService.getBySender(user);
             root.put("invites_from", invitesFrom);
 
-            User boss = new UserService().getBoss(user);
+            User boss = userService.getBoss(user);
             root.put("boss", boss);
 
-            List<User> employees = new UserService().getEmployees(user);
+            List<User> employees = userService.getEmployees(user);
             root.put("employees", employees);
 
-            boolean isEmployee = new UserService().isEmployeeOf(new UserService().getUserById(myId), user);
+            boolean isEmployee = userService.isEmployeeOf(userService.getUserById(myId), user);
             root.put("is_employee", isEmployee);
 
-            List<FactorAndUser> positiveFactorAndUsers = new FactorAndUserService().getPositiveByUser(user);
+            List<FactorAndUser> positiveFactorAndUsers = factorAndUserService.getPositiveByUser(user);
             root.put("positive", positiveFactorAndUsers);
-            List<FactorAndUser> negativeFactorAndUsers = new FactorAndUserService().getNegativeByUser(user);
+            List<FactorAndUser> negativeFactorAndUsers = factorAndUserService.getNegativeByUser(user);
             root.put("negative", negativeFactorAndUsers);
 
             int positiveSum = 0;

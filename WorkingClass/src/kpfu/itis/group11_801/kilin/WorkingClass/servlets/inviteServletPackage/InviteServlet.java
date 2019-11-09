@@ -21,11 +21,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class InviteServlet extends HttpServlet {
+
+    private UserService userService;
+    private FactorOfSalaryService factorOfSalaryService;
+    private FactorAndUserService factorAndUserService;
+    private InviteService inviteService;
+
+    @Override
+    public void init() throws ServletException {
+
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User sender = (User)request.getSession().getAttribute("user");
         User target;
         try {
-            target = new UserService().getUserById(Integer.parseInt(request.getParameter("target")));
+            target = userService.getUserById(Integer.parseInt(request.getParameter("target")));
         } catch (Exception e) {
             response.sendRedirect("/WorkingClass_war_exploded/invite?error=You should choose target");
             return;
@@ -47,11 +58,11 @@ public class InviteServlet extends HttpServlet {
             return;
         }
         FactorOfSalary fs = new FactorOfSalary(0, post, "the main of this post`s factors", sender.getCompany());
-        fs = new FactorOfSalaryService().getOrCreate(fs);
+        fs = factorOfSalaryService.getOrCreate(fs);
         FactorAndUser factorAndUser = new FactorAndUser(0, target, fs, value);
-        factorAndUser = new FactorAndUserService().getOrCreate(factorAndUser);
+        factorAndUser = factorAndUserService.getOrCreate(factorAndUser);
         Invite invite = new Invite(0, sender, target, factorAndUser);
-        invite = new InviteService().getOrCreate(invite);
+        invite = inviteService.getOrCreate(invite);
         response.sendRedirect("/WorkingClass_war_exploded/user");
     }
 
@@ -60,12 +71,11 @@ public class InviteServlet extends HttpServlet {
             response.sendRedirect("/WorkingClass_war_exploded/create_company");
         } else {
             Map<String, Object> root = new HashMap<>();
-            List<User> users = new UserService().getAllUsers().stream()
+            List<User> users = userService.getAllUsers().stream()
                     .filter(x -> x.getCompany() == null)
                     .collect(Collectors.toList());
             root.put("users", users);
             root.put("error", request.getParameter("error"));
-            root.put("user", request.getSession().getAttribute("user"));
             Helpers.render(request, response, "invite.ftl", root);
         }
     }

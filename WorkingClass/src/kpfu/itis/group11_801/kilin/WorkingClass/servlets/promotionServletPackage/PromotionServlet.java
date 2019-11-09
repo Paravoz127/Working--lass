@@ -14,10 +14,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PromotionServlet extends HttpServlet {
+
+    private PromotionRequestService promotionRequestService;
+
+    @Override
+    public void init() throws ServletException {
+        promotionRequestService = new PromotionRequestService();
+    }
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String message = request.getParameter("message");
         PromotionRequest pr = new PromotionRequest(0, (User)request.getSession().getAttribute("user"), message, false);
-        new PromotionRequestService().create(pr);
+        promotionRequestService.create(pr);
         response.sendRedirect("/WorkingClass_war_exploded/user");
     }
 
@@ -26,7 +34,6 @@ public class PromotionServlet extends HttpServlet {
             response.sendRedirect("/WorkingClass_war_exploded/user");
         } else {
             Map<String, Object> root = new HashMap<>();
-            root.put("user", request.getSession().getAttribute("user"));
             Helpers.render(request, response, "promotion_request.ftl", root);
         }
     }

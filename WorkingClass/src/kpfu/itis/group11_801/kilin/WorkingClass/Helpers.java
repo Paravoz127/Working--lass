@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Helpers {
 
@@ -30,6 +32,10 @@ public class Helpers {
                               String path,
                               Map<String, Object> root) throws IOException {
 
+        if (root == null) {
+            root = new HashMap<>();
+        }
+        root.put("user", request.getSession().getAttribute("user"));
 
         Configuration cfg = getConfig(request);
         try {
