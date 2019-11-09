@@ -1,7 +1,5 @@
 package kpfu.itis.group11_801.kilin.workingClass.database;
 
-import kpfu.itis.group11_801.kilin.workingClass.database.User;
-
 public class AuthenticationObject {
     private User user;
     private int code;
