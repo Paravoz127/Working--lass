@@ -2,6 +2,7 @@ package kpfu.itis.group11_801.kilin.workingClass.servlets.createCompanyServletPa
 
 import kpfu.itis.group11_801.kilin.workingClass.Helpers;
 import kpfu.itis.group11_801.kilin.workingClass.database.Company;
+import kpfu.itis.group11_801.kilin.workingClass.database.CompanyRegistrationObject;
 import kpfu.itis.group11_801.kilin.workingClass.database.Image;
 import kpfu.itis.group11_801.kilin.workingClass.database.User;
 import kpfu.itis.group11_801.kilin.workingClass.database.services.CompanyService;
@@ -16,6 +17,8 @@ import javax.servlet.http.Part;
 import javax.sound.midi.SysexMessage;
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 @MultipartConfig
 public class CreateCompanyServlet extends HttpServlet {
@@ -25,24 +28,33 @@ public class CreateCompanyServlet extends HttpServlet {
         String info = request.getParameter("info");
         Part photoPart = request.getPart("photo");
         Image image = Image.CreateImage(photoPart, getServletContext());
-        Company company = new CompanyService().registrate(new Company(0, name, info, image), user);
-        if (company == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/create_company");
+        if (image == null) {
+            response.sendRedirect("/WorkingClass_war_exploded/create_company?error=Company should have photo");
+            return;
+        }
+        CompanyRegistrationObject companyRegistrationObject = new CompanyService().registrate(new Company(0, name, info, image), user);
+        if (companyRegistrationObject.getCode() == -1) {
+            response.sendRedirect("/WorkingClass_war_exploded/create_company?error=Company already exists");
+        } else if (companyRegistrationObject.getCode() == 1) {
+            response.sendRedirect("/WorkingClass_war_exploded/create_company?error=Company should have name");
+        } else if (companyRegistrationObject.getCode() == 2) {
+            response.sendRedirect("/WorkingClass_war_exploded/create_company?error=Company should have info");
         } else {
+
             new InviteService().deleteAllInvites(new InviteService().getByTarget(user));
-            response.sendRedirect("/WorkingClass_war_exploded/company?id=" + company.getId());
+            response.sendRedirect("/WorkingClass_war_exploded/company?id=" + companyRegistrationObject.getCompany().getId());
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession().getAttribute("user") == null) {
-            response.sendRedirect("/WorkingClass_war_exploded/main");
-        } else {
             if (((User) request.getSession().getAttribute("user")).getCompany() != null) {
                 response.sendRedirect("/WorkingClass_war_exploded/user");
             } else {
-                Helpers.render(request, response, "create_company.ftl", null);
+                Map<String, Object> root = new HashMap<>();
+                root.put("user", request.getSession().getAttribute("user"));
+                root.put("error", request.getParameter("error"));
+                Helpers.render(request, response, "create_company.ftl", root);
             }
-        }
+
     }
 }
