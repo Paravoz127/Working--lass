@@ -29,8 +29,7 @@ public class UserService {
     }
 
     public AuthenticationObject authentication(String login, String password) {
-
-        String pattern = "[a-zA-Z0-9\\.]+@[a-z]+\\.[a-z]+";
+        String pattern = "[a-zA-Z0-9_\\-\\.]+@[a-z]+\\.[a-z]+";
         if (!login.matches(pattern)) {
             return new AuthenticationObject(null, 1);
         }
