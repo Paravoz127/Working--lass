@@ -30,10 +30,18 @@
     </head>
     <body>
     <nav class="nav-panel">
-        <a class="logo" href="#/">Main</a>
-        <a href="#messages">Messages</a>
-        <a href="#promotions">Promotions</a>
-        <button class="signoff">Sign Off</button>
+        <form action="/WorkingClass_war_exploded/user" method="POST">
+            <a class="logo" href="/WorkingClass_war_exploded/user">Profile</a>
+            <a href="/WorkingClass_war_exploded/dialogs">Messages</a>
+            <#if user.getCompany() ??>
+                <a href="/WorkingClass_war_exploded/promotions">Promotions</a>
+                <a href="/WorkingClass_war_exploded/company?id=${user.getCompany().getId()}">Company</a>
+            <#else>
+                <span style="margin-right:15%;"></span>
+            </#if>
+            <button type="submit" class="signoff" name="logout" value="true">Sign Off</button>
+
+        </form>
     </nav>
     <div class="wrapper">
         <div class="info">
