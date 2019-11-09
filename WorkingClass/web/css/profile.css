@@ -16,7 +16,7 @@
     background-color: inherit;
     font-weight: 600;
     border: none;
-    margin-left: 74%;
+    margin-left: 66%;
 }
 
 .signoff:hover {
@@ -51,18 +51,19 @@ a:hover {
 }
 
 .img {
-    min-width: 250px;
-    min-height: 300px;
     margin-inline-end: 50px;
+    margin-right: 25px;
 }
 
 .foto {
-    height: 300px;
-    width: 250px;
-    background-image: url(https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png);
+    max-width: 300px;
+    width: 100%;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+}
+.image {
+    max-width: 100%;
 }
 
 .pers-info {
@@ -86,10 +87,23 @@ a:hover {
     background-color: rgb(158, 163, 160);
     width: 100%;
   }
+.company-btn {
+    color: white;
+    padding: 5px 20px;
+    margin: 5px 0;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    background-color: rgb(158, 163, 160);
+    width: 50%;
+}
 
-  .edit:hover {
+.edit:hover {
     opacity: 0.8;
-  }
+}
+.form {
+    width:50%;
+}
 
 
 .txt {
@@ -141,7 +155,7 @@ a:hover {
     border: none;
     cursor: pointer;
     font-size: 15px;
-    width: 40%;
+    width: 100%;
 }
 
 .pos-buttons button:hover {

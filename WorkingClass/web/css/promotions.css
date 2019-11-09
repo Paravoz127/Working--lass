@@ -16,7 +16,7 @@
     background-color: inherit;
     font-weight: 600;
     border: none;
-    margin-left: 74%;
+    margin-left: 66%;
 }
 
 .signoff:hover {
@@ -164,7 +164,7 @@ body {
     justify-content: center;
 }
 
-form {
+.form {
     width:50%;
 }
 
