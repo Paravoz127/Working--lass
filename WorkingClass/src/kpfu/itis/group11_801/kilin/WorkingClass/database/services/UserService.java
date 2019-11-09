@@ -1,5 +1,6 @@
 package kpfu.itis.group11_801.kilin.workingClass.database.services;
 
+import kpfu.itis.group11_801.kilin.workingClass.database.AuthenticationObject;
 import kpfu.itis.group11_801.kilin.workingClass.database.DAO.UserDAO;
 import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
@@ -27,20 +28,25 @@ public class UserService {
         return userDAO.create(u);
     }
 
-    public User authentication(String login, String password) {
+    public AuthenticationObject authentication(String login, String password) {
+
+        String pattern = "[a-zA-Z0-9\\.]+@[a-z]+\\.[a-z]+";
+        if (!login.matches(pattern)) {
+            return new AuthenticationObject(null, 1);
+        }
         User user = getByEmail(login);
-        if (user == null) {return null;}
+        if (user == null) {return new AuthenticationObject(null, -1);}
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(password.getBytes());
             String result = new String(messageDigest.digest());
             if (result.equals(user.getPassword())) {
-                return user;
+                return new AuthenticationObject(user, 0);
             }
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return null;
+        return new AuthenticationObject(null, -1);
     }
 
     public User getUserById(int id) {

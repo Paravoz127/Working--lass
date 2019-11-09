@@ -7,8 +7,9 @@
 <#macro form>
     <form id="login-id" onsubmit="javascript:return validate('login-id', 'email')" action="/WorkingClass_war_exploded/main" method="POST">
     <div class="container">
+            <div style="color:red">${error!}</div>
         <label for="email"><b>Email</b></label>
-        <input type="text" name="email" placeholder="Enter Email" id="email" required />
+        <input type="text" name="email" value="${email!}" placeholder="Enter Email" id="email" required />
 
         <label for="password"><b>Password</b></label>
         <input
