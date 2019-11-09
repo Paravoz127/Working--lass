@@ -39,6 +39,6 @@ public class Message implements Comparable<Message> {
 
     @Override
     public int compareTo(Message o) {
-        return getDateTime().getSeconds() - o.getDateTime().getSeconds();
+        return getDateTime().getSec() - o.getDateTime().getSec();
     }
 }

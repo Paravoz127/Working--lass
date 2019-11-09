@@ -19,9 +19,9 @@ public class DateTime extends Date{
         super(date.split(" ")[0]);
         String [] dateAndTime = date.split(" ");
         String [] res = dateAndTime[1].split(":");
-        int hours = Integer.parseInt(res[0]);
-        int minutes = Integer.parseInt(res[1]);
-        int seconds = Integer.parseInt(res[2]);
+        this.hours = Integer.parseInt(res[0]);
+        this.minutes = Integer.parseInt(res[1]);
+        this.seconds = Integer.parseInt(res[2]);
     }
 
     public int getHours() {
@@ -38,7 +38,7 @@ public class DateTime extends Date{
 
     @Override
     public String toString() {
-        return super.toString() + " " + hours + "-" + minutes + "-" + seconds;
+        return super.toString() + " " + hours + ":" + minutes + ":" + seconds;
     }
 
     public static DateTime getCurrentDateTime() {
@@ -53,8 +53,8 @@ public class DateTime extends Date{
         return new DateTime(day, month, year, hours, minutes, seconds);
     }
 
-    public long getSec() {
-        return ((((getYear() - 2000) * 360 + YearMonth.of(getYear(), getMonth()).lengthOfMonth() + getDay()) * 24 + hours) * 60 + minutes) * 60 + seconds;
+    public int getSec() {
+        return ((((getYear() - 2018) * 360 + YearMonth.of(getYear(), getMonth()).lengthOfMonth() + getDay()) * 24 + hours) * 60 + minutes) * 60 + seconds;
     }
 
     public static void main(String [] args) {
