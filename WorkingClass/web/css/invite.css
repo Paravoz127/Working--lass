@@ -129,3 +129,13 @@ body {
 .submit-button:hover {
     opacity: 0.8;
 }
+
+.small-image {
+    height: 50px;
+    width: 50px;
+    margin-right: 5px;
+}
+
+.msg {
+    text-align: center;
+}

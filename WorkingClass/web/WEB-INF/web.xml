@@ -85,6 +85,11 @@
         <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.dialogsServletPackage.DialogsServlet
         </servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AjaxSearchServlet</servlet-name>
+        <servlet-class>kpfu.itis.group11_801.kilin.workingClass.servlets.ajaxSearchPackage.AjaxSearchServlet
+        </servlet-class>
+    </servlet>
 
 
     <filter-mapping>
@@ -108,6 +113,10 @@
         <url-pattern>/main</url-pattern>
         <url-pattern>/registration</url-pattern>
     </filter-mapping>
+    <servlet-mapping>
+        <servlet-name>AjaxSearchServlet</servlet-name>
+        <url-pattern>/search</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DialogsServlet</servlet-name>
         <url-pattern>/dialogs</url-pattern>

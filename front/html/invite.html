@@ -23,6 +23,9 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
+	<script type="text/javascript">
+		$
+	</script>
     <title>Profile</title>
   </head>
   <body>
@@ -37,10 +40,12 @@
         <div class="pers-info">
           <form class="pers-info">
           <label class="txt">User:</label>
-          <select name="users" id="">
-            <option value="user1">User1</option>
-            <option value="user2">User2</option>
-          </select>
+		  <select name="target" id="">
+                <option value="0">Choose from the list</option>
+                <#list users as user>
+                    <option value="${user.getId()}">${user.getFirstName() + " " + user.getSecondName()}</option>
+                </#list>
+            </select>
           <label class="txt">Position:</label>
           <input class="name" placeholder="Enter Position">
           <label class="txt">Salary:</label>
