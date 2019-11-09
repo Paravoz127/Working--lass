@@ -24,17 +24,23 @@ public class ChangeUserInfoServlet extends HttpServlet {
         User user = (User)request.getSession().getAttribute("user");
         String firstName = request.getParameter("first_name");
         String secondName = request.getParameter("second_name");
+
         Part photoPart = request.getPart("photo");
         Image image = Image.CreateImage(photoPart, getServletContext());
         if (image != null) {
             user.setImage(image);
         }
 
-        user.setFirstName(firstName);
-        user.setSecondName(secondName);
+        String namePattern = "[A-Z][a-z]+";
 
-        new UserService().update(user);
-        response.sendRedirect("/WorkingClass_war_exploded/user");
+        if (firstName != null && firstName.matches(namePattern) && secondName != null && secondName.matches(namePattern)) {
+            user.setFirstName(firstName);
+            user.setSecondName(secondName);
+            new UserService().update(user);
+            response.sendRedirect("/WorkingClass_war_exploded/user");
+        } else {
+            response.sendRedirect("/WorkingClass_war_exploded/set?error=Name has 1 word and starts with a capital letter");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -43,6 +49,7 @@ public class ChangeUserInfoServlet extends HttpServlet {
         } else {
             Map<String, Object> root = new HashMap<>();
             root.put("user", request.getSession().getAttribute("user"));
+            root.put("error", request.getParameter("error"));
             Helpers.render(request, response, "set.ftl", root);
         }
     }

@@ -1,8 +1,7 @@
 package kpfu.itis.group11_801.kilin.workingClass.database.services;
 
-import kpfu.itis.group11_801.kilin.workingClass.database.AuthenticationObject;
+import kpfu.itis.group11_801.kilin.workingClass.database.*;
 import kpfu.itis.group11_801.kilin.workingClass.database.DAO.UserDAO;
-import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -14,9 +13,44 @@ public class UserService {
         return userDAO.getByEmail(email);
     }
 
-    public User registrate(User u) {
+    public RegistrationObject registrate(String firstName, String secondName, String birthday, String email, String password, String password2) {
         UserDAO userDAO = UserDAO.getUserDAO();
-        if (getByEmail(u.getLogin()) != null || u.getDate().getYear() > 2001) {return null;}
+        String namePattern = "[A-Z][a-z]+";
+
+
+
+        String pattern = "[a-zA-Z0-9_\\-\\.]+@[a-z]+\\.[a-z]+";
+        if (email == null || !email.matches(pattern)) {
+            return new RegistrationObject(null, 7);
+        }
+
+        if (firstName == null || !firstName.matches(namePattern)) {
+            return new RegistrationObject(null, 1);
+        }
+        if (secondName == null || !secondName.matches(namePattern)) {
+            return new RegistrationObject(null, 2);
+        }
+
+        Date date = new Date(birthday);
+
+        if (birthday == null || date.getYear() > DateTime.getCurrentDateTime().getYear() - 18) {
+            return new RegistrationObject(null, 3);
+        } else if (date.getYear() < 1900){
+            return new RegistrationObject(null, 8);
+        }
+
+        if (password == null || password2 == null || !password.equals(password2)) {
+            return new RegistrationObject(null, 4);
+        }
+
+        if (password.length() < 8) {
+            return new RegistrationObject(null, 5);
+        }
+
+        User u = new User(0, firstName, secondName, email, password, date, null, null, null);
+        if (getByEmail(u.getLogin()) != null) {
+            return new RegistrationObject(null, 6);
+        }
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
             messageDigest.update(u.getPassword().getBytes());
@@ -25,7 +59,7 @@ public class UserService {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        return userDAO.create(u);
+        return new RegistrationObject(userDAO.create(u), 0);
     }
 
     public AuthenticationObject authentication(String login, String password) {
