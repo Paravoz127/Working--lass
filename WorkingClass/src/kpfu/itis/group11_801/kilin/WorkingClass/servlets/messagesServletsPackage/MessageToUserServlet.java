@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @MultipartConfig
 public class MessageToUserServlet extends HttpServlet {
@@ -27,17 +28,10 @@ public class MessageToUserServlet extends HttpServlet {
         User user = (User)request.getSession().getAttribute("user");
         User receiver = new UserService().getUserById(Integer.parseInt(request.getParameter("id")));
         String text = request.getParameter("message");
-        Part photoPart = request.getPart("photo1");
-        List<Image> images = new ArrayList<>();
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo2");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo3");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo4");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo5");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
+        List<Image> images = request.getParts().stream()
+                .filter(x -> x.getName().equals("images"))
+                .map(x -> Image.CreateImage(x, getServletContext()))
+                .collect(Collectors.toList());
         MessageToUser message = new MessageToUser(0, user, text, images, receiver, null);
         new MessageToUserService().create(message);
         response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId());
