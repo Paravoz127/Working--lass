@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @MultipartConfig
 public class MessageToCompanyServlet extends HttpServlet {
@@ -26,20 +27,19 @@ public class MessageToCompanyServlet extends HttpServlet {
         User user = (User)request.getSession().getAttribute("user");
         Company receiver = user.getCompany();
         String text = request.getParameter("message");
-        Part photoPart = request.getPart("photo1");
-        List<Image> images = new ArrayList<>();
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo2");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo3");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo4");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        photoPart = request.getPart("photo5");
-        images.add(Image.CreateImage(photoPart, getServletContext()));
-        MessageToCompany message = new MessageToCompany(0, user, text, images, receiver, null);
-        new MessageToCompanyService().create(message);
-        response.sendRedirect("/WorkingClass_war_exploded/com_messages");
+        List<Image> images = request.getParts().stream()
+                .filter(x -> x.getName().equals("images"))
+                .map(x -> Image.CreateImage(x, getServletContext()))
+                .collect(Collectors.toList());
+        if (images.get(0) == null && text.equals("")) {
+            response.sendRedirect("/WorkingClass_war_exploded/com_messages?error=Message should not be empty");
+        } else if (images.size() <= 5) {
+            MessageToCompany message = new MessageToCompany(0, user, text, images, receiver, null);
+            new MessageToCompanyService().create(message);
+            response.sendRedirect("/WorkingClass_war_exploded/com_messages");
+        } else {
+            response.sendRedirect("/WorkingClass_war_exploded/com_messages?error=You can not use more than 5 photos");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -50,6 +50,7 @@ public class MessageToCompanyServlet extends HttpServlet {
         root.put("messages", messages);
         root.put("user", user);
         root.put("receiver", receiver);
+        root.put("error", request.getParameter("error"));
         Helpers.render(request, response, "messages_to_company.ftl", root);
     }
 }

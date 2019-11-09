@@ -2,7 +2,7 @@
 <#include "authenticated.ftl" />
 
 <#macro info>
-    <@mes.info action="WorkingClass_war_exploded/com_messages"/>
+    <@mes.info action="com_messages"/>
 </#macro>
 
 <#macro css_js>

@@ -32,9 +32,15 @@ public class MessageToUserServlet extends HttpServlet {
                 .filter(x -> x.getName().equals("images"))
                 .map(x -> Image.CreateImage(x, getServletContext()))
                 .collect(Collectors.toList());
-        MessageToUser message = new MessageToUser(0, user, text, images, receiver, null);
-        new MessageToUserService().create(message);
-        response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId());
+        if (images.get(0) == null && text.equals("")) {
+            response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId() + "&error=Message should not be empty");
+        } else if (images.size() <= 5) {
+            MessageToUser message = new MessageToUser(0, user, text, images, receiver, null);
+            new MessageToUserService().create(message);
+            response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId());
+        } else {
+            response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId() + "&error=You can not use more than 5 photos");
+        }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,6 +61,7 @@ public class MessageToUserServlet extends HttpServlet {
         root.put("messages", messages);
         root.put("user", user);
         root.put("receiver", receiver);
+        root.put("error", request.getParameter("error"));
         Helpers.render(request, response, "messages_to_user.ftl", root);
     }
 }
