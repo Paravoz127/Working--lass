@@ -23,9 +23,29 @@ import java.util.stream.Collectors;
 public class InviteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User sender = (User)request.getSession().getAttribute("user");
-        User target = new UserService().getUserById(Integer.parseInt(request.getParameter("target")));
+        User target;
+        try {
+            target = new UserService().getUserById(Integer.parseInt(request.getParameter("target")));
+        } catch (Exception e) {
+            response.sendRedirect("/WorkingClass_war_exploded/invite?error=You should choose target");
+            return;
+        }
         String post = request.getParameter("post");
-        int value = Integer.parseInt(request.getParameter("value"));
+        if (post == null || post.equals("")) {
+            response.sendRedirect("/WorkingClass_war_exploded/invite?error=You should choose post");
+            return;
+        }
+        int value = 0;
+        try {
+            value = Integer.parseInt(request.getParameter("value"));
+            if (value <= 0) {
+                response.sendRedirect("/WorkingClass_war_exploded/invite?error=You should choose positive salary value");
+                return;
+            }
+        } catch (Exception e) {
+            response.sendRedirect("/WorkingClass_war_exploded/invite?error=You should choose positive salary value");
+            return;
+        }
         FactorOfSalary fs = new FactorOfSalary(0, post, "the main of this post`s factors", sender.getCompany());
         fs = new FactorOfSalaryService().getOrCreate(fs);
         FactorAndUser factorAndUser = new FactorAndUser(0, target, fs, value);
@@ -44,6 +64,7 @@ public class InviteServlet extends HttpServlet {
                     .filter(x -> x.getCompany() == null)
                     .collect(Collectors.toList());
             root.put("users", users);
+            root.put("error", request.getParameter("error"));
             root.put("user", request.getSession().getAttribute("user"));
             Helpers.render(request, response, "invite.ftl", root);
         }

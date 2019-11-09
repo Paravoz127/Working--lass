@@ -8,6 +8,7 @@
 <#macro info>
     <div class="pers-info">
         <form class="pers-info" action="/WorkingClass_war_exploded/invite" method="POST">
+            <div style="color:red">${error!}</div>
             <label class="txt">User:</label>
             <div class="dropdown">
                 <input id="dropdown" type="text" oninput="dropValueWithSearch()" onclick="ajaxSearch()" name="users" id="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></input>
