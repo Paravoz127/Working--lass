@@ -28,6 +28,7 @@ public class PromotionsServlet extends HttpServlet {
         Map<String, Object> root = new HashMap<>();
         List<PromotionRequest> promotionRequests = new PromotionRequestService().getAllToUser(user);
         root.put("requests", promotionRequests);
+        root.put("user", request.getSession().getAttribute("user"));
         Helpers.render(request, response, "promotions.ftl", root);
     }
 }

@@ -44,6 +44,7 @@ public class InviteServlet extends HttpServlet {
                     .filter(x -> x.getCompany() == null)
                     .collect(Collectors.toList());
             root.put("users", users);
+            root.put("user", request.getSession().getAttribute("user"));
             Helpers.render(request, response, "invite.ftl", root);
         }
     }

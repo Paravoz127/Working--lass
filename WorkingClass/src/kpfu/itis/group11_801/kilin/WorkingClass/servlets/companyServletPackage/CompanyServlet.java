@@ -31,6 +31,7 @@ public class CompanyServlet extends HttpServlet {
                         Helpers.render(request, response, "not_found.ftl", null);
                     } else {
                         Map<String, Object> root = new HashMap<>();
+                        root.put("user", request.getSession().getAttribute("user"));
                         root.put("company", company);
                         String path = company.getImage().getImagePath();
                         root.put("path", path);

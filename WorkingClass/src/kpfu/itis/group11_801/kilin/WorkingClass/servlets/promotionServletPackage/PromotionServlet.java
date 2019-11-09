@@ -25,7 +25,9 @@ public class PromotionServlet extends HttpServlet {
         if (((User)request.getSession().getAttribute("user")).getBoss()==null) {
             response.sendRedirect("/WorkingClass_war_exploded/user");
         } else {
-            Helpers.render(request, response, "promotion_request.ftl", null);
+            Map<String, Object> root = new HashMap<>();
+            root.put("user", request.getSession().getAttribute("user"));
+            Helpers.render(request, response, "promotion_request.ftl", root);
         }
     }
 }

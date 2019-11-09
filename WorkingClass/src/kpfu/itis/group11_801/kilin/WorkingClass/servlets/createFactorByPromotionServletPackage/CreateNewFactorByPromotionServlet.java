@@ -41,6 +41,7 @@ public class CreateNewFactorByPromotionServlet extends HttpServlet {
             PromotionRequest promotionRequest = new PromotionRequestService().getById(Integer.parseInt(request.getParameter("id")));
             Map<String, Object> root = new HashMap<>();
             root.put("promotion", promotionRequest);
+            root.put("user", request.getSession().getAttribute("user"));
             Helpers.render(request, response, "create_new_factor_by_promotion.ftl", root);
         } catch (Exception e) {
             e.printStackTrace();
