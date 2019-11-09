@@ -184,3 +184,22 @@ a {
 label {
     margin-bottom: 0px;
 }
+
+.small-image {
+    height: 50px;
+    width: 50px;
+    margin-right: 5px;
+}
+
+.search {
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.menu {
+    min-width: 350px;
+}
+
+.filters {
+    margin-left: 10px;
+}
