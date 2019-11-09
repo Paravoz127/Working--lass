@@ -13,10 +13,10 @@
                         <label class="txt">Sender:<a href="/WorkingClass_war_exploded/user?id=${elem.getSender().getId()}">${elem.getSender().toString()}</a></label>
                         <label class="txt">Message:<label class="nf">${elem.getMessage()}</label></label>
                         <label class="pos-buttons">
-                            <form method="get" action="/WorkingClass_war_exploded/factor_by_promotion">
+                            <form method="get" class="form" action="/WorkingClass_war_exploded/factor_by_promotion">
                                 <button class="accept" type="submit" name="id" value="${elem.getId()}">Accept</button>
                             </form>
-                            <form method="post" action="/WorkingClass_war_exploded/promotions">
+                            <form method="post" class="form" action="/WorkingClass_war_exploded/promotions">
                                 <button class="reject" type="submit" name="id" value="${elem.getId()}">Reject</button></label>
                             </form>
                     </label>
