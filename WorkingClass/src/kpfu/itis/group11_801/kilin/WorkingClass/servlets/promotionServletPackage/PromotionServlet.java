@@ -30,11 +30,6 @@ public class PromotionServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (((User)request.getSession().getAttribute("user")).getBoss()==null) {
-            response.sendRedirect("/WorkingClass_war_exploded/user");
-        } else {
-            Map<String, Object> root = new HashMap<>();
-            Helpers.render(request, response, "promotion_request.ftl", root);
-        }
+        response.sendRedirect("/WorkingClass_war_exploded/user");
     }
 }
