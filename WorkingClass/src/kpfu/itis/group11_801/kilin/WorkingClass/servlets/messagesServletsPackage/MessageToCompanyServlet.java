@@ -38,7 +38,7 @@ public class MessageToCompanyServlet extends HttpServlet {
                 .map(x -> Image.CreateImage(x, getServletContext()))
                 .collect(Collectors.toList());
         if (text.length() > 300) {
-            response.sendRedirect("/WorkingClass_war_exploded/messages?id=" + receiver.getId() + "&error=Message should not have more than 300 symbols");
+            response.sendRedirect("/WorkingClass_war_exploded/com_messages?error=Message should not have more than 300 symbols");
         } else if (images.get(0) == null && text.equals("")) {
             response.sendRedirect("/WorkingClass_war_exploded/com_messages?error=Message should not be empty");
         } else if (images.size() <= 5) {

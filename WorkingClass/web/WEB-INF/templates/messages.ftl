@@ -43,9 +43,10 @@
     <div class="pers-info">
         <form  action="${action}" class="pers-info" method="POST" enctype="multipart/form-data">
             <div style="color:red">${error!}</div>
-            <textarea autocomplete="off" class="message" name="message" placeholder="Enter Message"></textarea>
+            <textarea autocomplete="off" oninput="counter(300)" id="input" class="message" name="message" placeholder="Enter Message"></textarea>
             <div class="buttons">
                 <button class="submit-button" type="submit" name="id" value="${receiver.getId()}">Send</button>
+                <span style="text-align:center; margin-left: 30%">Characters left: <span id="count">300</span></span>
                 <div class="form-group">
                     <label for="my-input">Send File</label>
                     <input id="my-input" class="form-control-file" type="file" name="images" accept="image/jpeg,image/png" multiple>
