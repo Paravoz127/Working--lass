@@ -32,6 +32,15 @@ public class Date {
 
     @Override
     public String toString() {
-        return year + "-" + month + "-" + day;
+        String monthStr = month + "";
+        String dayStr = day + "";
+        if (month < 10) {
+            monthStr = 0 + monthStr;
+        }
+        if (day < 10) {
+            dayStr = 0 + dayStr;
+        }
+
+        return year + "-" + monthStr + "-" + dayStr;
     }
 }
