@@ -29,6 +29,8 @@
         <label class="f-name" for="f-name">${user.getFirstName()}</label>
         <label class="txt" for="second-name">Second Name:</label>
         <label class="s-name" for="s-name">${user.getSecondName()}</label><br>
+        <label class="txt" for="second-name">Date of birthday:</label>
+        <label class="s-name" for="s-name">${user.getDate().toString()}</label><br>
         <label class="txt" for="work-info">Work info</label>
         <#if user.getCompany() ??>
             <label class="txt" for="company"
