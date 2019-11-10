@@ -21,6 +21,7 @@ public class AjaxSearchServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = new UserService();
+        User usr = (User)request.getSession().getAttribute("user");
 
         List<User> users = new UserService().getAllUsers();
 
@@ -31,6 +32,9 @@ public class AjaxSearchServlet extends HttpServlet {
                     .filter(x -> x.toString().toLowerCase().contains(s.toLowerCase()))
                     .collect(Collectors.toList());
         }
+        users = users.stream()
+                .filter(x -> !x.equals(usr))
+                .collect(Collectors.toList());
 
         if (request.getParameter("Filter") != null) {
             int filter = Integer.parseInt(request.getParameter("Filter"));
