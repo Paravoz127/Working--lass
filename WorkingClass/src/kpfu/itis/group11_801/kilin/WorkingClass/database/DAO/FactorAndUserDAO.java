@@ -2,10 +2,7 @@ package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 
 import kpfu.itis.group11_801.kilin.workingClass.database.*;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +29,10 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     public List<FactorAndUser> getAll() throws SQLException {
         List<FactorAndUser> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_and_user;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_and_user;"
+            );
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getFactorAndUserByResultSet(rs));
             }
@@ -47,8 +46,11 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     public List<FactorAndUser> getPositiveByUser(int id) throws SQLException {
         List<FactorAndUser> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_and_user WHERE user_id=" + id + " AND value > 0;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_and_user WHERE user_id=? AND value > 0;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getFactorAndUserByResultSet(rs));
             }
@@ -62,8 +64,11 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     public List<FactorAndUser> getNegativeByUser(int id) throws SQLException {
         List<FactorAndUser> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_and_user WHERE user_id=" + id + " AND value < 0;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_and_user WHERE user_id=? AND value < 0;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getFactorAndUserByResultSet(rs));
             }
@@ -77,8 +82,11 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     @Override
     public FactorAndUser getById(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_and_user WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_and_user WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getFactorAndUserByResultSet(rs);
         } catch (SQLException e) {
@@ -91,12 +99,14 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     public FactorAndUser update(FactorAndUser elem) {
         int id = elem.getId();
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.factor_and_user SET "
-                    + "user_id=" + elem.getUser().getId() + ", "
-                    + "factor_id=" + elem.getFactorOfSalary().getId() + ", "
-                    + "value =" + elem.getValue() + " WHERE id=" + id + ";"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE public.factor_and_user SET user_id=?, factor_id=?, value=? WHERE id=?;"
             );
+            preparedStatement.setInt(1, elem.getUser().getId());
+            preparedStatement.setInt(2, elem.getFactorOfSalary().getId());
+            preparedStatement.setInt(3, elem.getValue());
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,8 +116,11 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
     @Override
     public void delete(int id) {
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.factor_and_user WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM public.factor_and_user WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,12 +137,13 @@ public class FactorAndUserDAO extends DAO<FactorAndUser> {
         int factor_id = elem.getFactorOfSalary().getId();
         int value = elem.getValue();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO public.factor_and_user " +
-                    "(user_id, factor_id, value ) "
-                    + "VALUES "
-                    + "(" + user_id + ", " + factor_id + ", " + value + ") RETURNING id;"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO public.factor_and_user (user_id, factor_id, value ) VALUES (?, ?, ?) RETURNING id;"
             );
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setInt(2, factor_id);
+            preparedStatement.setInt(3, value);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
