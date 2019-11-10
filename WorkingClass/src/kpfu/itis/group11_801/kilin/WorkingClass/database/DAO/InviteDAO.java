@@ -4,10 +4,7 @@ import kpfu.itis.group11_801.kilin.workingClass.database.FactorAndUser;
 import kpfu.itis.group11_801.kilin.workingClass.database.Invite;
 import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +31,10 @@ public class InviteDAO extends DAO<Invite>{
     public List<Invite> getAll() throws SQLException {
         List<Invite> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.invite;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.invite;"
+            );
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getInviteByResultSet(rs));
             }
@@ -49,8 +48,11 @@ public class InviteDAO extends DAO<Invite>{
     @Override
     public Invite getById(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.invite WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.invite WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getInviteByResultSet(rs);
         } catch (SQLException e) {
@@ -62,8 +64,11 @@ public class InviteDAO extends DAO<Invite>{
     public List<Invite> getByTarget(int id) {
         List<Invite> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.invite WHERE receiver=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.invite WHERE receiver=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getInviteByResultSet(rs));
             }
@@ -76,8 +81,11 @@ public class InviteDAO extends DAO<Invite>{
     public List<Invite> getBySender(int id) {
         List<Invite> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.invite WHERE sender=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.invite WHERE sender=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getInviteByResultSet(rs));
             }
@@ -91,12 +99,14 @@ public class InviteDAO extends DAO<Invite>{
     public Invite update(Invite elem) {
         int id = elem.getId();
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.invite SET "
-                    + "sender=" + elem.getSender().getId() + ", "
-                    + "receiver=" + elem.getReceiver().getId() + ", "
-                    + "factor_user=" + elem.getFactorAndUser().getId() + " WHERE id=" + id + ";"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE public.invite SET sender=?, receiver=?, factor_user=? WHERE id=?;"
             );
+            preparedStatement.setInt(1, elem.getSender().getId());
+            preparedStatement.setInt(2, elem.getReceiver().getId());
+            preparedStatement.setInt(3, elem.getFactorAndUser().getId());
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,8 +116,11 @@ public class InviteDAO extends DAO<Invite>{
     @Override
     public void delete(int id) {
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.invite WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM public.invite WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,12 +137,13 @@ public class InviteDAO extends DAO<Invite>{
         int receiver = elem.getReceiver().getId();
         int factorAndUser = elem.getFactorAndUser().getId();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO public.invite " +
-                    "(sender, receiver, factor_user) "
-                    + "VALUES "
-                    + "(" + sender + ", " + receiver + ", " + factorAndUser + ") RETURNING id;"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO public.invite (sender, receiver, factor_user) VALUES (?, ?, ?) RETURNING id;"
             );
+            preparedStatement.setInt(1, sender);
+            preparedStatement.setInt(2, receiver);
+            preparedStatement.setInt(3, factorAndUser);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
@@ -146,3 +160,4 @@ public class InviteDAO extends DAO<Invite>{
         return new Invite(id, sender, receiver, factorAndUser);
     }
 }
+
