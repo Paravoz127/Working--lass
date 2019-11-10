@@ -32,8 +32,10 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     public List<MessageToCompany> getAll() throws SQLException {
         List<MessageToCompany> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.company_message;"
+            );
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getMessageByResultSet(rs));
             }
@@ -47,8 +49,12 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     public List<MessageToCompany> getMessagesFrom1To2(User u1, Company company) {
         List<MessageToCompany> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE sender=" + u1.getId() + " AND receiver=" + company.getId() + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.company_message WHERE sender=? AND receiver=?;"
+            );
+            preparedStatement.setInt(1, u1.getId());
+            preparedStatement.setInt(2, company.getId());
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getMessageByResultSet(rs));
             }
@@ -62,9 +68,12 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     public List<MessageToCompany> getMessagesByCompany(Company company) {
         List<MessageToCompany> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE receiver=" + company.getId() + ";");
-                while (rs.next()) {
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.company_message WHERE receiver=?;"
+            );
+            preparedStatement.setInt(1, company.getId());
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
                 res.add(getMessageByResultSet(rs));
             }
         } catch (SQLException e) {
@@ -77,8 +86,11 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     @Override
     public MessageToCompany getById(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.company_message WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.company_message WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getMessageByResultSet(rs);
         } catch (SQLException e) {
@@ -99,17 +111,19 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
             i++;
         }
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.company_message SET "
-                    + "sender=" + elem.getSender().getId() + ", "
-                    + "receiver=" + elem.getReceiver().getId() + ", "
-                    + "images_paths[0]='" + paths[0] + "', "
-                    + "images_paths[1]='" + paths[1] + "', "
-                    + "images_paths[2]='" + paths[2] + "', "
-                    + "images_paths[3]='" + paths[3] + "', "
-                    + "images_paths[4]='" + paths[4] + "', "
-                    + "text='" + elem.getText() + "' WHERE id=" + id + ";"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE public.company_message SET sender=?, receiver=?, images_paths[0]=?, "
+                            + "images_paths[1]=?, images_paths[2]=?, images_paths[3]=?, images_paths[4]=?, text=? WHERE id=?"
             );
+            preparedStatement.setInt(1, elem.getSender().getId());
+            preparedStatement.setInt(2, elem.getReceiver().getId());
+            for (i = 0; i <= 4; i++) {
+                preparedStatement.setString(i + 3, paths[i]);
+            }
+            preparedStatement.setString(8, elem.getText());
+            preparedStatement.setInt(9, id);
+
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -119,8 +133,11 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
     @Override
     public void delete(int id) {
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.company_message WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM public.company_message WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -147,20 +164,18 @@ public class MessageToCompanyDAO extends DAO<MessageToCompany> {
             i++;
         }
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO public.company_message " +
-                    "(sender, receiver, images_paths[0], images_paths[1], images_paths[2], images_paths[3], images_paths[4], time, text) "
-                    + "VALUES "
-                    + "(" + senderId + ","
-                    + "" + receiverId + ", "
-                    + "'" + paths[0] + "', "
-                    + "'" + paths[1] + "', "
-                    + "'" + paths[2] + "', "
-                    + "'" + paths[3] + "', "
-                    + "'" + paths[4] + "', "
-                    + "'now', "
-                    + "'" + text + "') RETURNING id;"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO public.company_message (sender, receiver, images_paths[0], images_paths[1], "
+                            + "images_paths[2], images_paths[3], images_paths[4], time, text) VALUES (?, ?, ?, ?, ?, ?, ?, 'now', ?) RETURNING id;"
             );
+            preparedStatement.setInt(1, senderId);
+            preparedStatement.setInt(2, receiverId);
+            for (i = 0; i <= 4; i++) {
+                preparedStatement.setString(i + 3, paths[i]);
+            }
+            preparedStatement.setString(8, text);
+
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
