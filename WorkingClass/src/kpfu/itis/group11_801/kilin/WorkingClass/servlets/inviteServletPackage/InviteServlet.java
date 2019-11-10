@@ -29,7 +29,10 @@ public class InviteServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-
+        userService = new UserService();
+        factorAndUserService = new FactorAndUserService();
+        factorOfSalaryService = new FactorOfSalaryService();
+        inviteService = new InviteService();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
