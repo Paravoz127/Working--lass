@@ -12,11 +12,11 @@
     <div class="pers-info">
         <form class="pers-info" method="POST" action=${form_action} />
             <label class="txt">Factor:</label>
-            <input class="name" name="factor_name" placeholder="Enter factor name">
+            <input autocomplete="off" class="name" name="factor_name" placeholder="Enter factor name">
             <label class="txt">Salary($):</label>
-            <input type="Number" class="name" name="value" placeholder="Enter value">
+            <input autocomplete="off" type="Number" class="name" name="value" placeholder="Enter value">
             <label class="txt">Message:</label>
-            <textarea id="message" class="message" name="message" placeholder="Enter Message"></textarea>
+            <textarea autocomplete="off" id="message" class="message" name="message" placeholder="Enter Message"></textarea>
             <button class="submit-button" type="submit" ${submit_info} />Save</button>
         </form>
     </div>

@@ -11,7 +11,7 @@
             <div style="color:red">${error!}</div>
             <label class="txt">User:</label>
             <div class="dropdown">
-                <input id="dropdown" type="text" oninput="dropValueWithSearch()" onclick="ajaxSearch()" name="users" id="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></input>
+                <input autocomplete="off" id="dropdown" type="text" oninput="dropValueWithSearch()" onclick="ajaxSearch()" name="users" id="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></input>
                 <div id="dropdown-menu" class="dropdown-menu">
                     <#list users as user>
                         <div id="${user.getId()}" onclick="onDropDown(this)" class="dropdown-item" href="">
@@ -26,9 +26,9 @@
                 </div>
             </div>
             <label class="txt">Position:</label>
-            <input name="post" placeholder="Enter Position">
+            <input autocomplete="off" name="post" placeholder="Enter Position">
             <label class="txt">Salary:</label>
-            <input type ="Number" class="name" name="value" placeholder="Enter value">
+            <input autocomplete="off" type ="Number" class="name" name="value" placeholder="Enter value">
             <button class="submit-button" name="target" id="submit" type="submit">Save</button>
         </form>
     </div>

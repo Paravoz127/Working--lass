@@ -18,9 +18,9 @@
         <div style="color:red">${error!}</div>
         <form class="pers-info" action="/WorkingClass_war_exploded/set" method="POST" enctype="multipart/form-data">
             <label class="txt" for="first-name">First Name:</label>
-            <input class="name" name="first_name" value="${user.getFirstName()}" placeholder="Enter First name">
+            <input autocomplete="off" class="name" name="first_name" value="${user.getFirstName()}" placeholder="Enter First name">
             <label class="txt" for="second-name">Second Name:</label>
-            <input class="name" name="second_name" value="${user.getSecondName()}" placeholder="Enter Second name">
+            <input autocomplete="off" class="name" name="second_name" value="${user.getSecondName()}" placeholder="Enter Second name">
             <div class="form-group">
                 <label class="txt" for="my-input">Select image:</label>
                 <input id="my-input" name="photo" accept="image/jpeg,image/png" class="form-control-file" type="file" name="">

@@ -43,7 +43,7 @@
     <div class="pers-info">
         <form  action="${action}" class="pers-info" method="POST" enctype="multipart/form-data">
             <div style="color:red">${error!}</div>
-            <textarea class="message" name="message" placeholder="Enter Message"></textarea>
+            <textarea autocomplete="off" class="message" name="message" placeholder="Enter Message"></textarea>
             <div class="buttons">
                 <button class="submit-button" type="submit" name="id" value="${receiver.getId()}">Send</button>
                 <div class="form-group">

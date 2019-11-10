@@ -8,7 +8,7 @@
     <div class="pers-info">
         <form class="pers-info" action="/WorkingClass_war_exploded/promotion" method="POST">
             <label class="txt">Message:</label>
-            <textarea class="message" placeholder="Enter Message" name="message"></textarea>
+            <textarea autocomplete="off" class="message" placeholder="Enter Message" name="message"></textarea>
             <button class="submit-button" type="submit">Save</button>
         </form>
     </div>

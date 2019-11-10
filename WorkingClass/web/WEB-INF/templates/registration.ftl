@@ -13,11 +13,11 @@
         <div class="container">
             <div style="color:red">${error!}</div>
             <label for="first-name">First Name</label>
-            <input type="text" name="first_name" value="${first_name!}" placeholder="Enter First Name" id="fname" required />
+            <input autocomplete="off" type="text" name="first_name" value="${first_name!}" placeholder="Enter First Name" id="fname" required />
             <label for="second-name">Second Name</label>
-            <input type="text" name="second_name" value="${second_name!}" placeholder="Enter Second Name" id="sname" required />
+            <input autocomplete="off" type="text" name="second_name" value="${second_name!}" placeholder="Enter Second Name" id="sname" required />
             <label for="email">Email</label>
-            <input type="text" name="email" value="${email!}" placeholder="Enter Email" id="email" required />
+            <input autocomplete="off" type="text" name="email" value="${email!}" placeholder="Enter Email" id="email" required />
             <label for="bdate">Birth Date</label>
             <input type="date" name="date" id="bdate" required />
             <label for="password">Password</label>
