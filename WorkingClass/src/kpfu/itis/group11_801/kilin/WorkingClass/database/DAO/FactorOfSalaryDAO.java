@@ -3,10 +3,7 @@ package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 import kpfu.itis.group11_801.kilin.workingClass.database.Company;
 import kpfu.itis.group11_801.kilin.workingClass.database.FactorOfSalary;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +30,10 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
     public List<FactorOfSalary> getAll() throws SQLException {
         List<FactorOfSalary> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_of_salary;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_of_salary;"
+            );
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getFactorOfSalaryByResultSet(rs));
             }
@@ -48,8 +47,11 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
     @Override
     public FactorOfSalary getById(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.factor_of_salary WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.factor_of_salary WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getFactorOfSalaryByResultSet(rs);
         } catch (SQLException e) {
@@ -62,12 +64,14 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
     public FactorOfSalary update(FactorOfSalary elem) {
         int id = elem.getId();
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.factor_of_salary SET "
-                    + "name='" + elem.getName() + "', "
-                    + "info='" + elem.getInfo() + "', "
-                    + "company_id=" + elem.getCompany().getId() + " WHERE id=" + id + ";"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE public.factor_of_salary SET name=?, info=?, company_id=? WHERE id=?;"
             );
+            preparedStatement.setString(1, elem.getName());
+            preparedStatement.setString(2, elem.getInfo());
+            preparedStatement.setInt(3, elem.getCompany().getId());
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,8 +81,11 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
     @Override
     public void delete(int id) {
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.factor_of_salary WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM public.factor_of_salary WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -95,14 +102,13 @@ public class FactorOfSalaryDAO extends DAO<FactorOfSalary> {
         String info = elem.getInfo();
         int companyId = elem.getCompany().getId();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO public.factor_of_salary " +
-                    "(name, info, company_id) "
-                    + "VALUES "
-                    + "('" + name + "',"
-                    + "'" + info + "',"
-                    + companyId + ") RETURNING id;"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO public.factor_of_salary (name, info, company_id) VALUES (?, ?, ?) RETURNING id;"
             );
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, info);
+            preparedStatement.setInt(3, companyId);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
