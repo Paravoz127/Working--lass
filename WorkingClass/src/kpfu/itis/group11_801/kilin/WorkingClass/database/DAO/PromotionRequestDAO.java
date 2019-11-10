@@ -3,10 +3,7 @@ package kpfu.itis.group11_801.kilin.workingClass.database.DAO;
 import kpfu.itis.group11_801.kilin.workingClass.database.PromotionRequest;
 import kpfu.itis.group11_801.kilin.workingClass.database.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +30,10 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     public List<PromotionRequest> getAll() throws SQLException {
         List<PromotionRequest> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.promotion_request;");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.promotion_request;"
+            );
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getPromotionRequestByResultSet(rs));
             }
@@ -48,8 +47,11 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     public List<PromotionRequest> getAllFromUser(User user) {
         List<PromotionRequest> res = new ArrayList<>();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.promotion_request WHERE user_id=" + user.getId() + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.promotion_request WHERE user_id=?;"
+            );
+            preparedStatement.setInt(1, user.getId());
+            ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 res.add(getPromotionRequestByResultSet(rs));
             }
@@ -63,8 +65,11 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     @Override
     public PromotionRequest getById(int id) {
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("SELECT * FROM public.promotion_request WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM public.promotion_request WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getPromotionRequestByResultSet(rs);
         } catch (SQLException e) {
@@ -77,12 +82,14 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     public PromotionRequest update(PromotionRequest elem) {
         int id = elem.getId();
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("UPDATE public.promotion_request SET "
-                    + "user_id=" + elem.getSender().getId() + ", "
-                    + "message='" + elem.getMessage() + "', "
-                    + "decided='" + elem.isDecided() + "' WHERE id=" + id + ";"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "UPDATE public.promotion_request SET user_id=?, message=?, decided=? WHERE id=?"
             );
+            preparedStatement.setInt(1, elem.getSender().getId());
+            preparedStatement.setString(2, elem.getMessage());
+            preparedStatement.setBoolean(3, elem.isDecided());
+            preparedStatement.setInt(4, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -92,8 +99,11 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
     @Override
     public void delete(int id) {
         try {
-            Statement statement = connection.createStatement();
-            statement.executeQuery("DELETE FROM public.promotion_request WHERE id=" + id + ";");
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "DELETE FROM public.promotion_request WHERE id=?;"
+            );
+            preparedStatement.setInt(1, id);
+            preparedStatement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -110,14 +120,14 @@ public class PromotionRequestDAO extends DAO<PromotionRequest> {
         String message = elem.getMessage();
         boolean decided = elem.isDecided();
         try {
-            Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("INSERT INTO public.promotion_request " +
-                    "(user_id, message, decided) "
-                    + "VALUES "
-                    + "(" + user_id + ","
-                    + "'" + message + "', "
-                    + "'" + decided + "') RETURNING id;"
+            PreparedStatement preparedStatement = connection.prepareStatement(
+                    "INSERT INTO public.promotion_request (user_id, message, decided) VALUES (?, ?, ?) RETURNING id;"
             );
+            preparedStatement.setInt(1, user_id);
+            preparedStatement.setString(2, message);
+            preparedStatement.setBoolean(3, decided);
+
+            ResultSet rs = preparedStatement.executeQuery();
             rs.next();
             return getById(rs.getInt("id"));
         } catch (SQLException e) {
