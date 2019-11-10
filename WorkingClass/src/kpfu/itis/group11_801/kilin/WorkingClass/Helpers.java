@@ -35,7 +35,9 @@ public class Helpers {
         if (root == null) {
             root = new HashMap<>();
         }
-        root.put("user", request.getSession().getAttribute("user"));
+        if (!root.containsKey("user")) {
+            root.put("user", request.getSession().getAttribute("user"));
+        }
 
         Configuration cfg = getConfig(request);
         try {

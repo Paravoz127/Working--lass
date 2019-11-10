@@ -70,6 +70,7 @@ public class UserServlet extends HttpServlet {
 
             boolean isEmployee = userService.isEmployeeOf(userService.getUserById(myId), user);
             root.put("is_employee", isEmployee);
+            root.put("user", user);
 
             List<FactorAndUser> positiveFactorAndUsers = factorAndUserService.getPositiveByUser(user);
             root.put("positive", positiveFactorAndUsers);
