@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../css/profile.css" />
+    <script src="../js/profile.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <title>Profile</title>
+  </head>
+  <body>
+    <nav class="nav-panel">
+      <a class="logo" href="#/">Main</a>
+      <a href="#messages">Messages</a>
+      <a href="#promotions">Promotions</a>
+      <button class="signoff">Sign Off</button>
+    </nav>
+    <div class="wrapper">
+      <div class="info">
+        <div class="img">
+          <div class="foto"></div>
+          <button href="#" class="edit">Edit Profile</button>
+        </div>
+        <div class="pers-info">
+          <label class="txt" for="first-name">First Name:</label>
+          <label class="f-name" for="f-name">Dmitriy</label>
+          <label class="txt" for="second-name">Second Name:</label>
+          <label class="s-name" for="s-name">Leontev</label><br>
+          <label class="txt" for="work-info">Work info</label>
+          <label class="txt" for="company"
+            >Company: <a href="#company">ITIS</a></label
+          >
+          <label class="txt" for="head"
+            >Head: <a href="#head">Abra</a></label
+          >
+          <label class="txt">Position:<label class="position">Student</label></label>
+          <label class="txt">Salary:<label class="salary">0</label></label>
+          <a href="#">Invite user to company</a><br>
+          <label class="txt" for="employees">Employees:</label>
+          <div class="employees-list">
+                <ul class="list">
+                        <li class="item"><a href="#another person">Another person</a></li>
+                        <li class="item"><a href="#another person">Another person</a></li>
+                        <li class="item"><a href="#another person">Another person</a></li>
+                      </ul>
+          </div>
+        </div>
+        <div class="salfacts-invites">
+                <ul class="nav nav-tabs nav-fill" id="myTab" role="tablist">
+                        <li class="nav-item">
+                          <a class="nav-link active" id="sal-factors-tab" data-toggle="tab" href="#sal-factors" role="tab" aria-controls="sal-factors" aria-selected="true">Salary factors</a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" id="invites-tab" data-toggle="tab" href="#invites" role="tab" aria-controls="invites" aria-selected="false">Invites</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="sal-factors" role="tabpanel" aria-labelledby="sal-factors-tab"><div class="list-group list-group-flush">
+                                <div class="list-container">
+                                <a data-toggle="modal" data-target="#exampleModal" class="list-group-item list-group-item-action" id="req">New Request</a>
+                                  <!-- Modal -->
+                                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">New Request</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="">
+                                          <div class="body-container">
+                                    
+                                            <label class="txt">Message:</label>
+                                            <textarea class="message" placeholder="Enter Message"></textarea>
+                                                <button type="submit" class="btn btn-secondary" data-dismiss="modal">Send</button>
+                                                </form>
+                                          </div>
+                                            <div class="form-group">
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div></div>
+                                <li class="list-group-item list-group-item-success">
+                                    <label class="sal-factor-item">
+                                        <label class="txt">Name:<label class="nf">Name of factor</label></label>
+                                        <label class="txt">Value:<label class="nf">100000</label></label>
+                                        <label class="txt">Info:<br><label class="nf">Lorem ipsum dolor sit amet, consectetur adipiscing elit</label></label>
+                                    </label>
+                                </li>
+                                <li class="list-group-item list-group-item-danger">
+                                    <label class="sal-factor-item">
+                                        <label class="txt">Name:<label class="nf">Name of factor</label></label>
+                                        <label class="txt">Value:<label class="nf">-100000</label></label>
+                                        <label class="txt">Info:<br><label class="nf">Lorem consectetur adipiscing elit</label></label>
+                                    </label>
+                                </li>
+                                <li class="list-group-item list-group-item-success">
+                                        <label class="sal-factor-item">
+                                            <label class="txt">Name:<label class="nf">Name of factor</label></label>
+                                            <label class="txt">Value:<label class="nf">100000</label></label>
+                                            <label class="txt">Info:<br><label class="nf">Lorem ipsum dolor sit amet, consectetur adipiscing elit</label></label>
+                                        </label>
+                                    </li>
+                                </div>
+                            </div></div>
+                        <div class="tab-pane fade" id="invites" role="tabpanel" aria-labelledby="invites-tab">
+                        <div class="list-container">
+                            <div class="list-group list-group-flush">
+                                </li>
+                                    <li class="list-group-item">
+                                        <label class="sal-factor-item">
+                                            <label class="txt">Company:<a href="#">ITIS</a></label>
+                                            <label class="txt">Position:<label class="nf">Student</label></label>
+                                            <label class="txt">Salary:<label class="nf">-100000</label></label>
+                                            <label class="pos-buttons"><button class="accept">Accept</button><button class="reject">Reject</button></label>
+                                        </label>
+                                    </li>
+                                    <li class="list-group-item list-group-item-secondary">
+                                            <label class="sal-factor-item">
+                                                    <label class="txt">Company:<a href="#">ITIS</a></label>
+                                                    <label class="txt">Position:<label class="nf">Student</label></label>
+                                                    <label class="txt">Salary:<label class="nf">-100000</label></label>
+                                                    <label class="pos-buttons"><button class="accept">Accept</button><button class="reject">Reject</button></label>
+                                         </label>
+                                    </li>
+                                    <li class="list-group-item">
+                                            <label class="sal-factor-item">
+                                                <label class="txt">Company:<a href="#">ITIS</a></label>
+                                                <label class="txt">Position:<label class="nf">Student</label></label>
+                                                <label class="txt">Salary:<label class="nf">-100000</label></label>
+                                                <label class="pos-buttons"><button class="accept">Accept</button><button class="reject">Reject</button></label>
+                                            </label>
+                                        </li>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    <div class="back"></div>
+  </body>
+</html>

@@ -23,8 +23,10 @@
 hs_err_pid*
 
 .idea
-
 out
 *.kotlin_module
 
 *.iml
+
+*.jpg
+*.png
