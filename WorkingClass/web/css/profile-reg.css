@@ -131,3 +131,10 @@ body {
 .submit-button:hover {
     opacity: 0.8;
 }
+
+.name-error {
+    margin-left: 10px;
+    color: red;
+    visibility: hidden;
+    font-style: italic;
+}
