@@ -51,6 +51,7 @@ public class CreateNewFactorServlet extends HttpServlet {
             try {
                 User user = userService.getUserById(Integer.parseInt(request.getParameter("userId")));
                 Map<String, Object> root = new HashMap<>();
+                root.put("user", user);
                 Helpers.render(request, response, "create_factor.ftl", root);
             } catch (Exception e) {
                 e.printStackTrace();
