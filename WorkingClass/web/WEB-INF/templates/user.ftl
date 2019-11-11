@@ -15,10 +15,15 @@
             </#if>
         </div>
         <#if show_info >
-            <form action="/WorkingClass_war_exploded/set" method="GET">
-                <button class="edit" type="submit">edit</button>
+            <form action="/WorkingClass_war_exploded/create_factor" method="GET">
+                <button class="edit" type="submit">create new factor</button>
             </form>
         <#else>
+            <#if is_employee>
+                <form action="/WorkingClass_war_exploded/create_factor" method="GET">
+                <button type="submit" class="edit" name="userId" value="${user.getId()}">change salary</button>
+                </form>
+            </#if>
             <form action="/WorkingClass_war_exploded/messages" method="GET">
                 <button class="edit" type="submit" name="id" value="#{user.getId()}">message</button>
             </form>
