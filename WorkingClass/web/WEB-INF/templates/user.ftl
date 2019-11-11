@@ -15,8 +15,8 @@
             </#if>
         </div>
         <#if show_info >
-            <form action="/WorkingClass_war_exploded/create_factor" method="GET">
-                <button class="edit" type="submit">create new factor</button>
+            <form action="/WorkingClass_war_exploded/set" method="GET">
+                <button class="edit" type="submit">edit</button>
             </form>
         <#else>
             <#if is_employee>
