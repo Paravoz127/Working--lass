@@ -10,7 +10,7 @@
     <div class="container">
             <div style="color:red">${error!}</div>
         <label for="email"><b>Email</b> <label for="Email-error" class="email-error" id="email-error">Error</label></label>
-        <input autocomplete="off" type="text" name="email" value="${email!}" placeholder="Enter Email" id="email" required />
+        <input type="text" name="email" value="${email!}" placeholder="Enter Email" id="email" required />
 
         <label for="password"><b>Password</b><label for="Password-error" class="password-error">Error</label></label>
         <input
