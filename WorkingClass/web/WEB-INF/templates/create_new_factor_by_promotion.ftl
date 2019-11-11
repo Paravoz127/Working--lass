@@ -7,7 +7,7 @@
 </#macro>
 
 <#macro css_js>
-    <@factor.css_js message_value="${promotion.getMessage()}"/>
+    <@factor.css_js message_value="${message}"/>
 </#macro>
 
 <@display_page />

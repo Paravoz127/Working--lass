@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(name = "CreateNewFactorByPromotionServlet")
 public class CreateNewFactorByPromotionServlet extends HttpServlet {
@@ -42,10 +44,15 @@ public class CreateNewFactorByPromotionServlet extends HttpServlet {
             Map<String, Object> root = new HashMap<>();
             root.put("promotion", promotionRequest);
             root.put("user", request.getSession().getAttribute("user"));
+            String message = promotionRequest.getMessage();
+            Pattern pattern = Pattern.compile("\\n");
+            message = pattern.matcher(message).replaceAll(" ");
+            root.put("message", message);
             Helpers.render(request, response, "create_new_factor_by_promotion.ftl", root);
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("/WorkingClass_war_exploded/promotions");
         }
     }
+
 }
