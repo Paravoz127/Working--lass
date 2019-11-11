@@ -30,7 +30,7 @@
     <div class="dropdown dropright search">
         <label class="txt">New Dialog</label>
         <input autocomplete="off" id="dropdown" type="text" oninput="ajaxSearch()" onclick="ajaxSearch()" name="users" id="" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></input>
-        <div id="dropdown-menu" class="dropdown-menu menu">
+        <div id="dropdown-menu" class="dropdown-menu menu my-dropdown">
             <div class="filters">
                 <label class="txt">Filters: </label>
                 <div>

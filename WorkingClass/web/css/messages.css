@@ -203,3 +203,9 @@ label {
 .filters {
     margin-left: 10px;
 }
+
+.my-dropdown {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
